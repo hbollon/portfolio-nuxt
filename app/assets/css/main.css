@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+  --color-space-black: #0a0a0f;
+  --color-space-deep: #12121a;
+  --color-space-void: #1a1a28;
+  --color-nebula-purple: #a855f7;
+  --color-electric-blue: #3b82f6;
+  --color-cosmic-cyan: #06b6d4;
+  --color-star-white: #f8fafc;
+  --color-star-gray: #94a3b8;
+
+  --background-image-gradient-nebula: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+  --background-image-gradient-space: linear-gradient(180deg, #0a0a0f 0%, #1a1a28 100%);
+  --background-image-gradient-aurora: linear-gradient(90deg, #a855f7 0%, #06b6d4 50%, #3b82f6 100%);
+
+  --shadow-glow-purple: 0 0 20px rgba(168, 85, 247, 0.5);
+  --shadow-glow-blue: 0 0 20px rgba(59, 130, 246, 0.5);
+  --shadow-glow-cyan: 0 0 20px rgba(6, 182, 212, 0.5);
+  --shadow-glow-subtle: 0 0 40px rgba(168, 85, 247, 0.15);
+
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-glow-pulse: glow-pulse 2s ease-in-out infinite;
+  --animate-slide-in-right: slide-in-right 0.3s ease-out;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background-color: var(--color-space-black);
+    color: var(--color-star-white);
+  }
+}
+
+@layer components {
+  .glass {
+    background: color-mix(in srgb, var(--color-space-void) 60%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-star-gray) 10%, transparent);
+    backdrop-filter: blur(16px);
+  }
+
+  .text-gradient {
+    background-image: var(--background-image-gradient-nebula);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
