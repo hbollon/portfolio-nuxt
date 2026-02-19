@@ -1,0 +1,14 @@
+{
+  "app": {
+    "title": "Hugo Bollon",
+    "tagline": "Ingénieur DevOps & Développeur Fullstack"
+  },
+  "nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "experience": "Expérience",
+    "skills": "Compétences",
+    "projects": "Projets",
+    "contact": "Contact"
+  }
+}

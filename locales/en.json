@@ -1,0 +1,14 @@
+{
+  "app": {
+    "title": "Hugo Bollon",
+    "tagline": "DevOps Engineer & Fullstack Developer"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "experience": "Experience",
+    "skills": "Skills",
+    "projects": "Projects",
+    "contact": "Contact"
+  }
+}
