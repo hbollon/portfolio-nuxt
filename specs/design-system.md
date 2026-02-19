@@ -4,7 +4,7 @@
 
 ### Design tokens (Tailwind)
 
-All visual values are defined as Tailwind design tokens in `tailwind.config.ts`. No magic values or arbitrary Tailwind classes (`[#fff]`) unless explicitly justified.
+All visual values are defined as Tailwind design tokens via the `@theme` directive in `app/assets/css/main.css`. No magic values or arbitrary Tailwind classes (`[#fff]`) unless explicitly justified. There is no `tailwind.config.ts` file — Tailwind v4 configuration is entirely CSS-based.
 
 ### Color tokens
 
@@ -19,12 +19,22 @@ star-white:     #f8fafc     (primary text)
 star-gray:      #94a3b8     (secondary text)
 ```
 
-Defined under `theme.extend.colors` in Tailwind config with nested structure:
-- `space.black`, `space.deep`, `space.void`
-- `nebula.purple`
-- `electric.blue`
-- `cosmic.cyan`
-- `star.white`, `star.gray`
+Defined via `@theme` in `app/assets/css/main.css` as CSS custom properties:
+
+```css
+@theme {
+  --color-space-black: #0a0a0f;
+  --color-space-deep: #12121a;
+  --color-space-void: #1a1a28;
+  --color-nebula-purple: #a855f7;
+  --color-electric-blue: #3b82f6;
+  --color-cosmic-cyan: #06b6d4;
+  --color-star-white: #f8fafc;
+  --color-star-gray: #94a3b8;
+}
+```
+
+Tailwind v4 generates utility classes directly from these custom properties (e.g. `bg-space-black`, `text-nebula-purple`).
 
 ### Gradient tokens
 
@@ -34,7 +44,15 @@ gradient-space:   linear-gradient(180deg, #0a0a0f 0%, #1a1a28 100%)
 gradient-aurora:  linear-gradient(90deg, #a855f7 0%, #06b6d4 50%, #3b82f6 100%)
 ```
 
-Defined under `theme.extend.backgroundImage`.
+Defined via `@theme` in `app/assets/css/main.css`:
+
+```css
+@theme {
+  --background-image-gradient-nebula: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+  --background-image-gradient-space: linear-gradient(180deg, #0a0a0f 0%, #1a1a28 100%);
+  --background-image-gradient-aurora: linear-gradient(90deg, #a855f7 0%, #06b6d4 50%, #3b82f6 100%);
+}
+```
 
 ### Shadow tokens (glow effects)
 
@@ -45,7 +63,16 @@ glow-cyan:    0 0 20px rgba(6, 182, 212, 0.5)
 glow-subtle:  0 0 40px rgba(168, 85, 247, 0.15)
 ```
 
-Defined under `theme.extend.boxShadow`.
+Defined via `@theme` in `app/assets/css/main.css`:
+
+```css
+@theme {
+  --shadow-glow-purple: 0 0 20px rgba(168, 85, 247, 0.5);
+  --shadow-glow-blue: 0 0 20px rgba(59, 130, 246, 0.5);
+  --shadow-glow-cyan: 0 0 20px rgba(6, 182, 212, 0.5);
+  --shadow-glow-subtle: 0 0 40px rgba(168, 85, 247, 0.15);
+}
+```
 
 ### Typography tokens
 
@@ -54,7 +81,14 @@ Defined under `theme.extend.boxShadow`.
 | Sans-serif | Inter          | Google Fonts | `font-sans`    |
 | Monospace  | JetBrains Mono | Google Fonts | `font-mono`    |
 
-Defined under `theme.extend.fontFamily`.
+Defined via `@theme` in `app/assets/css/main.css`:
+
+```css
+@theme {
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+```
 
 ### Spacing
 
@@ -68,7 +102,18 @@ Uses Tailwind's default spacing scale (4px base). No custom spacing tokens added
 | glow-pulse      | 2s       | ease-in-out       | `animate-glow-pulse`     |
 | slide-in-right  | 0.3s     | ease-out          | `animate-slide-in-right` |
 
-Custom easing: `out-expo` → `cubic-bezier(0.16, 1, 0.3, 1)`.
+Custom animations are defined via `@theme` and `@keyframes` in `app/assets/css/main.css`:
+
+```css
+@theme {
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-glow-pulse: glow-pulse 2s ease-in-out infinite;
+  --animate-slide-in-right: slide-in-right 0.3s ease-out;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+```
+
+Keyframe definitions live in `app/assets/css/animations.css`.
 
 ### Transition defaults
 
@@ -150,9 +195,9 @@ Content max-width: `max-w-7xl` (80rem / 1280px).
 ## Assumptions
 
 - Google Fonts (Inter, JetBrains Mono) are loaded via `<link rel="preconnect">` + `<link rel="stylesheet">` in the document head with `font-display: swap`. This is decided (see performance.md).
-- Icon library: **`nuxt-icon`** module (Iconify). Provides access to 200k+ icons including `devicon`, `mdi`, `heroicons`, `simple-icons`. Usage: `<Icon name="devicon:go" />`.
+- Icon library: **`@nuxt/icon`** module (Iconify). Provides access to 200k+ icons including `devicon`, `mdi`, `heroicons`, `simple-icons`. Usage: `<Icon name="devicon:go" />`.
 
 ## Open questions
 
-1. ~~**Icon strategy**~~: **Resolved. `nuxt-icon` module (Iconify).** Provides `<Icon>` component with access to devicon for tech icons, mdi/heroicons for UI icons.
+1. ~~**Icon strategy**~~: **Resolved. `@nuxt/icon` module (Iconify).** Provides `<Icon>` component with access to devicon for tech icons, mdi/heroicons for UI icons.
 2. **Custom scrollbar**: Defined in CSS for Webkit browsers. Firefox/Safari support varies. Decide if custom scrollbar is worth the cross-browser inconsistency.

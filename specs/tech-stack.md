@@ -6,12 +6,12 @@
 
 | Layer      | Technology          | Version   | Status     |
 |------------|---------------------|-----------|------------|
-| Framework  | Nuxt 3              | ^3.15     | Imposed    |
-| UI         | Vue 3               | ^3.5      | Imposed    |
-| Language   | TypeScript          | ^5.6      | Imposed    |
-| Styling    | TailwindCSS         | ^3.4      | Imposed    |
-| Package mgr| Yarn (Classic v1)   | 1.22.x    | Imposed    |
-| Runtime    | Node.js             | v20 LTS   | Detected   |
+| Framework  | Nuxt 4              | latest    | Imposed    |
+| UI         | Vue 3               | latest    | Imposed    |
+| Language   | TypeScript          | latest    | Imposed    |
+| Styling    | TailwindCSS         | ^4.x      | Imposed    |
+| Package mgr| Yarn Berry          | 4.x       | Imposed    |
+| Runtime    | Node.js             | v24 LTS   | Imposed    |
 
 These choices are imposed by the project owner and are not open for discussion unless a critical blocking issue is identified.
 
@@ -19,12 +19,13 @@ These choices are imposed by the project owner and are not open for discussion u
 
 | Module                  | Purpose                         | Loading     |
 |-------------------------|---------------------------------|-------------|
-| `@nuxtjs/tailwindcss`   | Tailwind integration            | Universal   |
 | `@nuxtjs/i18n`          | Internationalization (FR + EN)  | Universal   |
 | `@nuxt/image`           | Image optimization (local assets) | Universal   |
 | `@vueuse/nuxt`          | Vue composition utilities       | Universal   |
-| `nuxt-simple-sitemap`   | Sitemap generation              | Build       |
-| `nuxt-icon`             | Iconify icon system             | Universal   |
+| `@nuxtjs/sitemap`       | Sitemap generation              | Build       |
+| `@nuxt/icon`            | Iconify icon system             | Universal   |
+
+**Note**: `@nuxtjs/tailwindcss` is **not used**. Tailwind v4 integrates directly via the `@tailwindcss/vite` Vite plugin, without a Nuxt module layer. Configuration is CSS-based (`@theme` in `assets/css/main.css`), not a `tailwind.config.ts` JS file.
 
 ### External libraries
 
@@ -52,6 +53,8 @@ These choices are imposed by the project owner and are not open for discussion u
 | `prettier-plugin-tailwindcss` | Tailwind class ordering      |
 | TypeScript `strict: true`     | Strict type checking         |
 
+**Note**: `prettier-plugin-tailwindcss` supports Tailwind v4 starting from v0.6.x.
+
 ### Not included (explicit exclusions)
 
 | Technology      | Reason                                                    |
@@ -66,9 +69,11 @@ These choices are imposed by the project owner and are not open for discussion u
 
 - `strict: true` enforced.
 - `typeCheck: true` in `nuxt.config.ts` to enable build-time type checking.
-- No `any` type allowed. Strapi response types defined in `types/strapi.d.ts`.
+- `noUncheckedIndexedAccess: true` — Nuxt 4 default. Array and object index access returns `T | undefined`. All index access must be guarded.
+- No `any` type allowed. Strapi response types defined in `shared/types/strapi.ts`.
 - Vue components use `<script setup lang="ts">` exclusively.
 - Props defined with `defineProps<T>()` using generic syntax.
+- Nuxt 4 generates split tsconfig files: `tsconfig.app.json`, `tsconfig.server.json`, `tsconfig.shared.json`, `tsconfig.node.json`. Types in `shared/` are picked up by `tsconfig.shared.json`.
 
 ## Environment variables
 
@@ -84,12 +89,13 @@ These choices are imposed by the project owner and are not open for discussion u
 
 ## Assumptions
 
-- Node.js v20 LTS is the target runtime for development and CI.
-- Yarn Classic (v1) is used, not Yarn Berry (v2+). `yarn.lock` format is v1.
+- Node.js v24 LTS is the target runtime for development and CI.
+- Yarn Berry (v4) is used. `.yarn/` directory and `.yarnrc.yml` are committed. `yarn.lock` format is v8.
+- PnP mode is **disabled** (`nodeLinker: node-modules` in `.yarnrc.yml`) for compatibility with Nuxt and native modules.
 - ESLint uses the new flat config format (`eslint.config.js`, not `.eslintrc`).
 
 ## Open questions
 
 1. ~~**Strapi module vs custom composable**~~: **Resolved. Custom composable (`useStrapi.ts`).**
-2. **Tailwind v3 vs v4**: Tailwind v4 was released in 2025. The session assumes v3. If v4 is desired, configuration format changes significantly (CSS-based config vs JS). **Decision: Stay on v3 for stability.**
+2. ~~**Tailwind v3 vs v4**~~: **Resolved. Tailwind v4 with `@tailwindcss/vite` plugin. No `tailwind.config.ts`, configuration is CSS-based.**
 3. **`@tsparticles/slim` vs `@tsparticles/engine` + presets**: The slim bundle includes common shapes and interactions. If only the stars preset is needed, a more minimal import may be possible. To investigate during Phase 4.

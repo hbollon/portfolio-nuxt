@@ -53,23 +53,31 @@ Decision: AWS hosting is chosen for coherence with existing Strapi infrastructur
 
 **Pipeline steps**:
 1. Checkout repository.
-2. Setup Node.js 20 with Yarn cache.
-3. `yarn install --frozen-lockfile`.
+2. Setup Node.js 24 with Yarn Berry cache.
+3. `yarn install --immutable`.
 4. `yarn generate` (with Strapi env vars from GitHub Secrets).
 5. Upload `.output/public/` to S3 bucket (`aws s3 sync --delete`).
 6. Invalidate CloudFront cache (`aws cloudfront create-invalidation --paths "/*"`).
+
+**AWS authentication**: IAM OIDC (already configured in the infrastructure repository). No static credentials. GitHub Actions assumes an IAM role via OIDC token.
 
 **Required GitHub Secrets**:
 | Secret                        | Description                       |
 |-------------------------------|-----------------------------------|
 | `STRAPI_URL`                  | Strapi API base URL               |
 | `STRAPI_TOKEN`                | Strapi read-only API token        |
-| `AWS_ACCESS_KEY_ID`           | AWS credentials for S3/CloudFront |
-| `AWS_SECRET_ACCESS_KEY`       | AWS credentials for S3/CloudFront |
+| `AWS_ROLE_ARN`                | IAM role ARN to assume via OIDC   |
 | `AWS_REGION`                  | AWS region (e.g., `eu-west-3`)    |
 | `S3_BUCKET_NAME`              | Target S3 bucket name             |
 | `CLOUDFRONT_DISTRIBUTION_ID`  | CloudFront distribution ID        |
 | `GOOGLE_ANALYTICS_ID`         | GA4 measurement ID (optional)     |
+
+**OIDC workflow permissions** (in GitHub Actions job):
+```yaml
+permissions:
+  id-token: write
+  contents: read
+```
 
 ### Content update workflow
 
@@ -103,7 +111,8 @@ S3 serves uncompressed files; compression happens at the CloudFront edge.
 
 ## Assumptions
 
-- AWS credentials used in CI have minimal permissions: `s3:PutObject`, `s3:DeleteObject`, `s3:ListBucket` on the target bucket, and `cloudfront:CreateInvalidation` on the distribution.
+- AWS authentication in CI uses IAM OIDC. The IAM role and OIDC provider are already configured in the infrastructure repository. No static `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` credentials are used.
+- The IAM role assumed via OIDC has minimal permissions: `s3:PutObject`, `s3:DeleteObject`, `s3:ListBucket` on the target bucket, and `cloudfront:CreateInvalidation` on the distribution.
 - S3 bucket is configured for static website hosting with index document `index.html` and error document `404.html` (or `200.html` for SPA fallback, though SSG should not need this).
 - CloudFront is configured with the S3 bucket as origin (via OAI or OAC, not public bucket).
 - HTTPS is enforced (HTTP → HTTPS redirect at CloudFront level).
@@ -113,7 +122,7 @@ S3 serves uncompressed files; compression happens at the CloudFront edge.
 1. ~~**Domain name**~~: **Resolved. `hugobollon.dev`.** Required for CloudFront alternate domain name (CNAME), ACM certificate, and DNS configuration.
 2. **404 handling**: Nuxt SSG generates a `404.html`. CloudFront custom error response must be configured to return this page with HTTP 404 status on S3 403 responses (object not found).
 3. **Webhook rebuild**: Not implemented in v1. When implementing, the Strapi webhook needs a GitHub Personal Access Token with `repo` scope. Security implications must be evaluated.
-4. **AWS IAM**: Exact IAM policy for CI deployment is not specified. Should follow least-privilege principle.
+4. ~~**AWS IAM**~~: **Resolved. IAM OIDC configured in infrastructure repository. IAM role ARN provided via `AWS_ROLE_ARN` secret.**
 
 ## Risks
 

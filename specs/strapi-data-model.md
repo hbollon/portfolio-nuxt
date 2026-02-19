@@ -52,7 +52,7 @@
 
 **Relations**: Referenced by Project, Experience, and About via many-to-many.
 
-**Assumption**: Icon strategy decided: **`nuxt-icon`** module (Iconify). The `icon` field stores an Iconify icon name (e.g., `devicon:go`, `mdi:docker`, `simple-icons:kubernetes`). The frontend renders these using the `<Icon>` component from `nuxt-icon`.
+**Assumption**: Icon strategy decided: **`@nuxt/icon`** module (Iconify). The `icon` field stores an Iconify icon name (e.g., `devicon:go`, `mdi:docker`, `simple-icons:kubernetes`). The frontend renders these using the `<Icon>` component from `@nuxt/icon`.
 
 ### Project (Collection)
 

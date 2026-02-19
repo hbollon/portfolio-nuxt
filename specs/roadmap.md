@@ -9,31 +9,32 @@ This roadmap reflects decisions made during the planning session. It is not a wi
 **Estimated effort**: 1 day
 
 **Deliverables**:
-- Nuxt 3 project initialized with `nuxi init`.
-- All dependencies installed via Yarn.
-- `nuxt.config.ts` fully configured (modules, SSG, TypeScript, i18n, image optimization).
-- `tailwind.config.ts` with complete design token system (colors, fonts, shadows, animations).
-- `tsconfig.json` with strict mode.
-- ESLint flat config + Prettier + Tailwind plugin.
-- `assets/css/main.css` with Tailwind directives, base styles, and utility classes (`.glass`, `.text-gradient`).
-- `assets/css/animations.css` with custom keyframes.
+- Nuxt 4 project initialized with `nuxi init`.
+- All dependencies installed via Yarn Berry v4.
+- `.yarnrc.yml` configured (`nodeLinker: node-modules`). `.yarn/` directory committed (releases only, not cache).
+- `nuxt.config.ts` fully configured (modules, SSG via `nitro.prerender`, TypeScript, i18n, image optimization, `@tailwindcss/vite` Vite plugin).
+- Tailwind v4 design tokens defined in `app/assets/css/main.css` via `@theme` directive (colors, fonts, shadows, animations). No `tailwind.config.ts`.
+- `tsconfig.json` at root using Nuxt 4 project references (`tsconfig.app.json`, `tsconfig.shared.json`, etc.).
+- ESLint flat config + Prettier + `prettier-plugin-tailwindcss`.
+- `app/assets/css/main.css` with `@import "tailwindcss"`, `@theme` design tokens, base styles, and utility classes (`.glass`, `.text-gradient`) under `@layer components`.
+- `app/assets/css/animations.css` with custom `@keyframes`.
 - `.env.example` with all required variables documented.
-- `.gitignore` configured for Nuxt 3.
-- Complete folder structure created (empty directories with purpose).
+- `.gitignore` configured for Nuxt 4 + Yarn Berry.
+- Complete folder structure created matching Nuxt 4 layout (`app/`, `shared/`, `public/`, `locales/` at root).
 - `yarn dev` starts successfully.
 
 **Exit criteria**: `yarn dev` runs without errors. `yarn typecheck` passes.
 
-**Commit**: `feat: initialize nuxt 3 project with full configuration`
+**Commit**: `feat: initialize nuxt 4 project with full configuration`
 
 ## Phase 2 — Strapi integration layer
 
 **Estimated effort**: 0.5 day
 
 **Deliverables**:
-- `types/strapi.d.ts`: Complete TypeScript type definitions for all Strapi content types.
-- `composables/useStrapi.ts`: Typed fetch functions for each content type (projects, experiences, education, technologies, about, homepage, contact).
-- `utils/strapi.ts`: Helper functions (`getStrapiMedia`, date formatting).
+- `shared/types/strapi.ts`: Complete TypeScript type definitions for all Strapi content types.
+- `app/composables/useStrapi.ts`: Typed fetch functions for each content type (projects, experiences, education, technologies, about, homepage, contact).
+- `app/utils/strapi.ts`: Helper functions (`getStrapiMedia`, date formatting).
 - Plugin or configuration for Strapi API authentication (token via env var).
 
 **Dependencies**: Strapi content types must be created (see strapi-data-model.md). Types must match the actual API response shape (Strapi v5, flat format). Custom composable approach confirmed.
@@ -53,15 +54,15 @@ This roadmap reflects decisions made during the planning session. It is not a wi
 **Estimated effort**: 1 day
 
 **Deliverables**:
-- `components/ui/Button.vue` (primary, secondary, ghost variants; sm, md, lg sizes).
-- `components/ui/Card.vue` (glassmorphism container).
-- `components/ui/Badge.vue` (technology badge with color and icon).
-- `components/ui/Section.vue` (section wrapper with id anchor and padding).
-- `components/ui/Container.vue` (max-width + responsive padding).
-- `components/layout/AppHeader.vue` (fixed, glassmorphism, scroll spy, mobile hamburger).
-- `components/layout/AppFooter.vue` (minimal footer).
-- `components/layout/LanguageSwitcher.vue` (FR/EN toggle).
-- `layouts/default.vue` (header + main + footer shell).
+- `app/components/ui/Button.vue` (primary, secondary, ghost variants; sm, md, lg sizes).
+- `app/components/ui/Card.vue` (glassmorphism container).
+- `app/components/ui/Badge.vue` (technology badge with color and icon).
+- `app/components/ui/Section.vue` (section wrapper with id anchor and padding).
+- `app/components/ui/Container.vue` (max-width + responsive padding).
+- `app/components/layout/AppHeader.vue` (fixed, glassmorphism, scroll spy, mobile hamburger).
+- `app/components/layout/AppFooter.vue` (minimal footer).
+- `app/components/layout/LanguageSwitcher.vue` (FR/EN toggle).
+- `app/layouts/default.vue` (header + main + footer shell).
 
 **Exit criteria**: Layout renders correctly on desktop and mobile. Navigation links exist (not yet wired to sections). Language switcher toggles locale.
 
@@ -74,13 +75,13 @@ This roadmap reflects decisions made during the planning session. It is not a wi
 **Estimated effort**: 0.5-1 day
 
 **Deliverables**:
-- `plugins/gsap.client.ts`: GSAP + ScrollTrigger initialization.
-- `plugins/particles.client.ts`: tsparticles initialization with slim engine.
-- `plugins/gtag.client.ts`: Google Analytics 4 setup (conditional on env var).
-- `components/animations/ParticlesBackground.vue` (stars preset, fixed behind all content).
-- `components/animations/ScrollReveal.vue` (fade-in wrapper, Intersection Observer).
-- `components/animations/TypedText.vue` (GSAP-powered text cycling).
-- `composables/useScrollAnimation.ts` (GSAP ScrollTrigger helpers).
+- `app/plugins/gsap.client.ts`: GSAP + ScrollTrigger initialization.
+- `app/plugins/particles.client.ts`: tsparticles initialization with slim engine.
+- `app/plugins/gtag.client.ts`: Google Analytics 4 setup (conditional on env var).
+- `app/components/animations/ParticlesBackground.vue` (stars preset, fixed behind all content).
+- `app/components/animations/ScrollReveal.vue` (fade-in wrapper, Intersection Observer).
+- `app/components/animations/TypedText.vue` (GSAP-powered text cycling).
+- `app/composables/useScrollAnimation.ts` (GSAP ScrollTrigger helpers).
 - `prefers-reduced-motion` support in CSS and GSAP initialization.
 
 **Exit criteria**: Particles render without performance issues (<60 FPS). ScrollReveal triggers correctly. Reduced motion is respected.
@@ -94,7 +95,7 @@ This roadmap reflects decisions made during the planning session. It is not a wi
 **Deliverables**:
 - `locales/en.json`: Complete English UI translations.
 - `locales/fr.json`: Complete French UI translations.
-- `composables/useSeo.ts`: Dynamic meta tags, Open Graph, Twitter Card, canonical URL.
+- `app/composables/useSeo.ts`: Dynamic meta tags, Open Graph, Twitter Card, canonical URL.
 - `public/robots.txt`.
 - Default `public/og-image.jpg` (placeholder, to be replaced with final design).
 
@@ -118,10 +119,10 @@ This roadmap reflects decisions made during the planning session. It is not a wi
 | Contact              | `ContactSection.vue`           | Email, social links, availability status         |
 
 Supporting content components:
-- `components/content/ProjectCard.vue`
-- `components/content/ExperienceCard.vue`
-- `components/content/SkillBadge.vue`
-- `components/content/SocialLink.vue`
+- `app/components/content/ProjectCard.vue`
+- `app/components/content/ExperienceCard.vue`
+- `app/components/content/SkillBadge.vue`
+- `app/components/content/SocialLink.vue`
 
 **Exit criteria**: Each section renders with mock/static data. Layout is responsive. Scroll animations trigger correctly.
 
@@ -132,7 +133,7 @@ Supporting content components:
 **Estimated effort**: 0.5-1 day
 
 **Deliverables**:
-- `pages/index.vue`: Fetches all data from Strapi via `useStrapi()` composable. Passes data as props to sections.
+- `app/pages/index.vue`: Fetches all data from Strapi via `useStrapi()` composable. Passes data as props to sections.
 - SSG generates complete HTML with real content.
 - SEO meta tags populated from Strapi data.
 
