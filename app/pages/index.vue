@@ -7,7 +7,7 @@ const { t } = useI18n()
     <section class="px-4 py-24">
       <div class="mx-auto max-w-4xl">
         <h1 class="text-3xl font-bold">{{ t('app.title') }}</h1>
-        <p class="mt-4 text-star-gray">{{ t('app.tagline') }}</p>
+        <p class="text-star-gray mt-4">{{ t('app.tagline') }}</p>
       </div>
     </section>
   </main>
