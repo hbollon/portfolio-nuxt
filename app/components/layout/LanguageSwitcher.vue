@@ -3,7 +3,9 @@ const { locale } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
 const localeCookie = useCookie<string>('i18n_redirected', { path: '/' })
 
-const availableLocales = [
+type LocaleCode = 'en' | 'fr'
+
+const availableLocales: Array<{ code: LocaleCode; label: string }> = [
   { code: 'en', label: 'EN' },
   { code: 'fr', label: 'FR' },
 ]

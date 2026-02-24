@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
+import LanguageSwitcher from '~/components/layout/LanguageSwitcher.vue'
 
 type NavItem = {
   id: string
