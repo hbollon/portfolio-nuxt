@@ -33,3 +33,6 @@ logs
 
 # Yarn state
 .yarn/install-state.gz
+
+# Strapi dump output (local validation only, not committed)
+scripts/dump/
