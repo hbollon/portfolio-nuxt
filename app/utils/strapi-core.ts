@@ -1,3 +1,5 @@
+import qs from 'qs'
+
 export interface StrapiFetchOptions {
   query?: Record<string, unknown>
   headers?: Record<string, string>
@@ -21,6 +23,11 @@ export const buildUrl = (path: string): string => {
   return `/api/${path}`
 }
 
+// Serializes query params using qs to support nested objects (populate, filters).
+export const serializeQuery = (query: Record<string, unknown>): string => {
+  return qs.stringify(query, { encodeValuesOnly: true })
+}
+
 // Adds the bearer token only when provided.
 const buildAuthHeaders = (token?: string): Record<string, string> => {
   if (!token) {
@@ -35,13 +42,18 @@ const buildAuthHeaders = (token?: string): Record<string, string> => {
 // Creates a minimal Strapi REST client with base URL and auth handling.
 export const createStrapiClient = (config: StrapiClientConfig) => {
   const get = async <T>(path: string, options: StrapiFetchOptions = {}): Promise<T> => {
-    return (await $fetch(buildUrl(path), {
+    const basePath = buildUrl(path)
+    const urlPath =
+      options.query && Object.keys(options.query).length > 0
+        ? `${basePath}?${serializeQuery(options.query)}`
+        : basePath
+
+    return (await $fetch(urlPath, {
       baseURL: config.baseUrl,
       headers: {
         ...buildAuthHeaders(config.token),
         ...(options.headers ?? {}),
       },
-      query: options.query,
     })) as T
   }
 

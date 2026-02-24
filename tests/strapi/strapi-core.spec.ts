@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
 import { describe, expect, it, vi } from 'vitest'
 
-import { buildUrl, createStrapiClient } from '../../app/utils/strapi-core'
+import { buildUrl, createStrapiClient, serializeQuery } from '../../app/utils/strapi-core'
 
 type FetchArgs = [string, Record<string, unknown>?]
 
@@ -17,6 +17,23 @@ describe('buildUrl', () => {
 
   it('keeps /api prefix when already present', () => {
     expect(buildUrl('/api/projects')).toBe('/api/projects')
+  })
+})
+
+describe('serializeQuery', () => {
+  it('serializes flat params', () => {
+    expect(serializeQuery({ locale: 'fr', sort: ['order:asc'] })).toBe(
+      'locale=fr&sort[0]=order%3Aasc'
+    )
+  })
+
+  it('serializes nested populate objects in bracket notation', () => {
+    const result = serializeQuery({
+      populate: {
+        featuredProjects: { populate: ['thumbnail'] },
+      },
+    })
+    expect(result).toBe('populate[featuredProjects][populate][0]=thumbnail')
   })
 })
 
@@ -49,16 +66,29 @@ describe('createStrapiClient', () => {
     expect(typedOptions?.headers?.Authorization).toBeUndefined()
   })
 
-  it('passes query parameters', async () => {
+  it('appends query params as qs-serialized string in the URL', async () => {
     fetchMock.mockResolvedValueOnce({ data: [] })
 
     const client = createStrapiClient({ baseUrl: 'https://api.example.com' })
     await client.get('/projects', { query: { locale: 'fr', sort: ['order:asc'] } })
 
-    const [, options] = fetchMock.mock.calls[
-      fetchMock.mock.calls.length - 1
-    ] as unknown as FetchArgs
-    const typedOptions = options as { query?: Record<string, unknown> }
-    expect(typedOptions?.query).toEqual({ locale: 'fr', sort: ['order:asc'] })
+    const [url] = fetchMock.mock.calls[fetchMock.mock.calls.length - 1] as unknown as FetchArgs
+    expect(url).toBe('/api/projects?locale=fr&sort[0]=order%3Aasc')
+  })
+
+  it('appends nested populate in bracket notation', async () => {
+    fetchMock.mockResolvedValueOnce({ data: [] })
+
+    const client = createStrapiClient({ baseUrl: 'https://api.example.com' })
+    await client.get('/homepage', {
+      query: {
+        populate: {
+          featuredProjects: { populate: ['thumbnail'] },
+        },
+      },
+    })
+
+    const [url] = fetchMock.mock.calls[fetchMock.mock.calls.length - 1] as unknown as FetchArgs
+    expect(url).toBe('/api/homepage?populate[featuredProjects][populate][0]=thumbnail')
   })
 })

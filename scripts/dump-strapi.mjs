@@ -17,6 +17,7 @@ import { readFileSync, mkdirSync, writeFileSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { $fetch } from 'ofetch'
+import qs from 'qs'
 
 // ---------------------------------------------------------------------------
 // Bootstrap: load .env if present
@@ -143,10 +144,11 @@ let failure = 0
 for (const endpoint of endpoints) {
   process.stdout.write(`Fetching ${endpoint.name}... `)
   try {
-    const data = await $fetch(endpoint.path, {
+    const queryString = qs.stringify(endpoint.query, { encodeValuesOnly: true })
+    const url = queryString ? `${endpoint.path}?${queryString}` : endpoint.path
+    const data = await $fetch(url, {
       baseURL: BASE_URL,
       headers,
-      query: endpoint.query,
     })
     const outFile = resolve(OUT_DIR, `${endpoint.name}.json`)
     writeFileSync(outFile, JSON.stringify(data, null, 2) + '\n', 'utf8')
