@@ -25,8 +25,6 @@ This roadmap reflects decisions made during the planning session. It is not a wi
 
 **Exit criteria**: `yarn dev` runs without errors. `yarn typecheck` passes.
 
-**Commit**: `feat: initialize nuxt 4 project with full configuration`
-
 ## Phase 2 — Strapi integration layer
 
 **Estimated effort**: 0.5 day
@@ -40,8 +38,6 @@ This roadmap reflects decisions made during the planning session. It is not a wi
 **Dependencies**: Strapi content types must be created (see strapi-data-model.md). Types must match the actual API response shape (Strapi v5, flat format). Custom composable approach confirmed.
 
 **Exit criteria**: Composable functions compile without type errors. If Strapi is accessible, a manual test fetch returns expected data shape.
-
-**Commit**: `feat: add strapi types and integration layer`
 
 **Parallel work (manual, on Strapi instance)**:
 - Create all content types per strapi-data-model.md.
@@ -66,10 +62,6 @@ This roadmap reflects decisions made during the planning session. It is not a wi
 
 **Exit criteria**: Layout renders correctly on desktop and mobile. Navigation links exist (not yet wired to sections). Language switcher toggles locale.
 
-**Commits**:
-- `feat(ui): add atomic ui components`
-- `feat(layout): add header, footer and navigation`
-
 ## Phase 4 — Animations and effects
 
 **Estimated effort**: 0.5-1 day
@@ -86,8 +78,6 @@ This roadmap reflects decisions made during the planning session. It is not a wi
 
 **Exit criteria**: Particles render without performance issues (<60 FPS). ScrollReveal triggers correctly. Reduced motion is respected.
 
-**Commit**: `feat(animations): add particles background and scroll reveal components`
-
 ## Phase 5 — i18n and SEO
 
 **Estimated effort**: 0.5 day
@@ -100,8 +90,6 @@ This roadmap reflects decisions made during the planning session. It is not a wi
 - Default `public/og-image.jpg` (placeholder, to be replaced with final design).
 
 **Exit criteria**: Switching locale changes all UI strings. Meta tags are present in SSG HTML output. Sitemap generates correctly.
-
-**Commit**: `feat(i18n): add french and english translations and seo composable`
 
 ## Phase 6 — Page sections
 
@@ -126,8 +114,6 @@ Supporting content components:
 
 **Exit criteria**: Each section renders with mock/static data. Layout is responsive. Scroll animations trigger correctly.
 
-**Commits**: One per section (`feat(hero): ...`, `feat(about): ...`, etc.)
-
 ## Phase 7 — Data integration
 
 **Estimated effort**: 0.5-1 day
@@ -140,8 +126,6 @@ Supporting content components:
 **Dependencies**: Strapi must be populated with real content and accessible from dev machine.
 
 **Exit criteria**: `yarn generate` produces complete static HTML. Opening `index.html` shows all sections with real Strapi content.
-
-**Commit**: `feat: integrate strapi data fetching in homepage`
 
 ## Phase 8 — Optimization and polish
 
@@ -157,11 +141,6 @@ Supporting content components:
 
 **Exit criteria**: Lighthouse scores meet targets. No accessibility violations. Responsive layout verified on mobile, tablet, desktop.
 
-**Commits**:
-- `perf: optimize images and bundle size`
-- `fix(a11y): improve accessibility`
-- `style: responsive polish`
-
 ## Phase 9 — Documentation
 
 **Estimated effort**: 0.5 day
@@ -172,8 +151,6 @@ Supporting content components:
 - Final build verification (`yarn dev`, `yarn build`, `yarn generate`, `yarn preview`).
 
 **Exit criteria**: A new developer can clone the repo, follow README instructions, and run the project locally.
-
-**Commit**: `docs: add project setup instructions`
 
 ## Total estimated effort
 
