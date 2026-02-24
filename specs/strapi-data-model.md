@@ -69,7 +69,7 @@
 | `featured`         | ~~Boolean~~           | ~~No~~       | ~~No~~     | ~~Default: false~~               | **DEPRECATED** — Use Homepage `featuredProjects` relation instead |
 | `startDate`        | Date              | Yes      | No     | —                            | Project start date                   |
 | `endDate`          | Date              | No       | No     | —                            | Null if ongoing                      |
-| `status`           | Enumeration       | No       | No     | Values: `completed`, `in-progress`, `archived` | Display status badge   |
+| `projectStatus`    | Enumeration       | No       | No     | Values: `completed`, `in_progress`, `archived` | Display status badge. Renamed from `status` to avoid collision with Strapi's internal `status` field (reserved by `draftAndPublish`). |
 | `order`            | Integer           | No       | No     | Default: 0                   | Manual sort order                    |
 | `seo`              | Component (single)| No       | No     | Component: `shared.seo`      | Reserved for future detail page      |
 
