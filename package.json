@@ -10,7 +10,9 @@
     "postinstall": "nuxt prepare",
     "typecheck": "nuxt typecheck",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "dump": "node scripts/dump-strapi.mjs"
   },
   "dependencies": {
     "@nuxt/icon": "^2.2.1",
@@ -32,6 +34,7 @@
     "tailwindcss": "^4.2.0",
     "typescript": "^5.9.3",
     "vite": "^7.0.0",
+    "vitest": "^4.0.18",
     "vue-tsc": "^3.2.4"
   },
   "packageManager": "yarn@4.12.0"
