@@ -6,6 +6,7 @@ const props = withDefaults(
   }>(),
   {
     tone: 'default',
+    id: undefined,
   }
 )
 </script>

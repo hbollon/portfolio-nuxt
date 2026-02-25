@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import { describe, expect, it, vi } from 'vitest'
 
 import { createStrapiApi } from '../../app/utils/strapi-client'

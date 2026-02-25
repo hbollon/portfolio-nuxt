@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import { describe, expect, it, vi } from 'vitest'
 
 import { buildUrl, createStrapiClient, serializeQuery } from '../../app/utils/strapi-core'

@@ -7,6 +7,7 @@ const props = withDefaults(
   }>(),
   {
     color: 'var(--color-nebula-purple)',
+    icon: undefined,
   }
 )
 </script>

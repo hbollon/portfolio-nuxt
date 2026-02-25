@@ -20,6 +20,8 @@ const props = withDefaults(
     variant: 'primary',
     size: 'md',
     tag: 'button',
+    href: undefined,
+    to: undefined,
     type: 'button',
     disabled: false,
   }
