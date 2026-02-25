@@ -10,5 +10,92 @@
     "skills": "Skills",
     "projects": "Projects",
     "contact": "Contact"
+  },
+  "hero": {
+    "title": "Engineering resilient platforms",
+    "subtitle": "with calm precision",
+    "description": "I design, automate, and operate cloud-native systems with a focus on reliability, security, and developer experience.",
+    "ctaPrimary": "View projects",
+    "ctaSecondary": "Get in touch",
+    "typedPhrases": ["I build", "I deploy", "I automate"],
+    "typedSuffix": "for modern teams",
+    "scrollHint": "Scroll"
+  },
+  "about": {
+    "title": "About",
+    "description": "DevOps Engineer with a fullstack background, focused on automation, platform reliability, and open-source tooling.",
+    "resume": "Download resume",
+    "github": "Open-source work",
+    "profileLabel": "Profile",
+    "profileTitle": "Systems-minded builder",
+    "profileBody": "I help teams ship faster by designing resilient platforms, reducing toil, and making infrastructure observable.",
+    "location": "Based in Grenoble, France"
+  },
+  "experience": {
+    "title": "Experience",
+    "subtitle": "Recent roles and the systems I helped scale.",
+    "work": "Work",
+    "educationTitle": "Education",
+    "items": {
+      "sre": {
+        "title": "Site Reliability Engineer",
+        "company": "Cloud Platform Team",
+        "period": "2022 — Present",
+        "location": "Grenoble, France",
+        "description": "Built platform automation, improved incident response, and led reliability initiatives across microservices."
+      },
+      "platform": {
+        "title": "Platform Engineer",
+        "company": "Infra & Tooling",
+        "period": "2020 — 2022",
+        "location": "Remote",
+        "description": "Delivered IaC foundations, CI/CD pipelines, and observability stacks for distributed teams."
+      }
+    },
+    "education": {
+      "msc": {
+        "title": "MSc in Distributed Systems",
+        "school": "Grenoble Institute of Technology",
+        "period": "2018 — 2020",
+        "location": "Grenoble, France",
+        "description": "Specialized in cloud infrastructure, networking, and resilient backend design."
+      }
+    }
+  },
+  "skills": {
+    "title": "Skills",
+    "subtitle": "Core technologies and platforms I use every day.",
+    "categories": {
+      "languages": "Languages",
+      "platforms": "Platforms",
+      "tooling": "Tooling"
+    }
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "Selected initiatives focused on reliability, automation, and scale.",
+    "links": {
+      "caseStudy": "Case study",
+      "github": "GitHub",
+      "live": "Live"
+    },
+    "items": {
+      "edge": {
+        "title": "Edge Observability Mesh",
+        "description": "Unified telemetry pipeline across multi-region services with faster feedback loops and reduced MTTR."
+      },
+      "observability": {
+        "title": "Infrastructure Observability Suite",
+        "description": "Reusable dashboards, alerts, and runbooks for high-scale distributed systems."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "Let’s connect if you’re looking for a DevOps partner who cares about delivery and reliability.",
+    "status": "Available for new missions",
+    "location": "Grenoble, France",
+    "cta": "Let’s talk",
+    "ctaButton": "Schedule a conversation"
   }
 }

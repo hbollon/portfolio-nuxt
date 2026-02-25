@@ -10,5 +10,92 @@
     "skills": "Compétences",
     "projects": "Projets",
     "contact": "Contact"
+  },
+  "hero": {
+    "title": "Des plateformes résilientes",
+    "subtitle": "avec une précision calme",
+    "description": "Je conçois, automatise et opère des systèmes cloud-native avec un focus sur la fiabilité, la sécurité et l’expérience développeur.",
+    "ctaPrimary": "Voir les projets",
+    "ctaSecondary": "Me contacter",
+    "typedPhrases": ["Je conçois", "Je déploie", "J'automatise"],
+    "typedSuffix": "pour des équipes modernes",
+    "scrollHint": "Découvrir"
+  },
+  "about": {
+    "title": "À propos",
+    "description": "Ingénieur DevOps avec un background fullstack, orienté automatisation, fiabilité plateforme et outillage open source.",
+    "resume": "Télécharger le CV",
+    "github": "Contributions open source",
+    "profileLabel": "Profil",
+    "profileTitle": "Architecte orienté systèmes",
+    "profileBody": "J’aide les équipes à livrer plus vite en construisant des plateformes robustes, observables et efficaces.",
+    "location": "Basé à Grenoble, France"
+  },
+  "experience": {
+    "title": "Expérience",
+    "subtitle": "Rôles récents et plateformes que j’ai aidé à faire évoluer.",
+    "work": "Expérience",
+    "educationTitle": "Formation",
+    "items": {
+      "sre": {
+        "title": "Site Reliability Engineer",
+        "company": "Cloud Platform Team",
+        "period": "2022 — Aujourd’hui",
+        "location": "Grenoble, France",
+        "description": "Mise en place d’automatisations, amélioration de la gestion d’incidents et pilotage d’initiatives fiabilité."
+      },
+      "platform": {
+        "title": "Platform Engineer",
+        "company": "Infra & Tooling",
+        "period": "2020 — 2022",
+        "location": "Remote",
+        "description": "Livraison d’une base IaC, pipelines CI/CD et stacks d’observabilité pour équipes distribuées."
+      }
+    },
+    "education": {
+      "msc": {
+        "title": "MSc en systèmes distribués",
+        "school": "Grenoble Institute of Technology",
+        "period": "2018 — 2020",
+        "location": "Grenoble, France",
+        "description": "Spécialisation cloud, réseau et conception backend résiliente."
+      }
+    }
+  },
+  "skills": {
+    "title": "Compétences",
+    "subtitle": "Technologies et plateformes que j’utilise au quotidien.",
+    "categories": {
+      "languages": "Langages",
+      "platforms": "Plateformes",
+      "tooling": "Outillage"
+    }
+  },
+  "projects": {
+    "title": "Projets",
+    "subtitle": "Sélection d’initiatives orientées fiabilité, automatisation et scale.",
+    "links": {
+      "caseStudy": "Étude de cas",
+      "github": "GitHub",
+      "live": "En ligne"
+    },
+    "items": {
+      "edge": {
+        "title": "Edge Observability Mesh",
+        "description": "Pipeline de télémétrie unifié multi-région pour des retours plus rapides et un MTTR réduit."
+      },
+      "observability": {
+        "title": "Infrastructure Observability Suite",
+        "description": "Dashboards, alerting et runbooks réutilisables pour systèmes distribués à grande échelle."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "Échangeons si vous cherchez un partenaire DevOps orienté delivery et fiabilité.",
+    "status": "Disponible pour de nouvelles missions",
+    "location": "Grenoble, France",
+    "cta": "Discutons",
+    "ctaButton": "Planifier un échange"
   }
 }
