@@ -66,6 +66,8 @@ export default defineNuxtConfig({
       { code: 'fr', language: 'fr-FR', file: 'fr.json', name: 'Français' },
     ],
     defaultLocale: 'en',
+    // Keep English as the default without auto-redirecting based on browser language.
+    detectBrowserLanguage: false,
     strategy: 'prefix_except_default',
     langDir: '../locales',
     vueI18n: './i18n.config.ts',

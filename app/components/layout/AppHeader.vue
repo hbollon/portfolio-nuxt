@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import LanguageSwitcher from '~/components/layout/LanguageSwitcher.vue'
 
 type NavItem = {
@@ -7,14 +7,17 @@ type NavItem = {
   label: string
 }
 
-const navItems: NavItem[] = [
-  { id: 'hero', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'contact', label: 'Contact' },
-]
+const { t } = useI18n()
+
+// Build nav labels from i18n while keeping section IDs stable.
+const navItems = computed<NavItem[]>(() => [
+  { id: 'hero', label: t('nav.home') },
+  { id: 'about', label: t('nav.about') },
+  { id: 'experience', label: t('nav.experience') },
+  { id: 'skills', label: t('nav.skills') },
+  { id: 'projects', label: t('nav.projects') },
+  { id: 'contact', label: t('nav.contact') },
+])
 
 const isScrolled = ref(false)
 const activeSection = ref('hero')
@@ -37,7 +40,8 @@ onMounted(() => {
   window.addEventListener('scroll', updateScrollState, { passive: true })
   window.addEventListener('resize', onResize, { passive: true })
 
-  const sections = navItems
+  // Scroll spy based on section IDs; labels are localized separately.
+  const sections = navItems.value
     .map((item) => document.getElementById(item.id))
     .filter((section): section is HTMLElement => Boolean(section))
 
