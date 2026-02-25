@@ -9,6 +9,13 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css', '~/assets/css/animations.css'],
 
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+    },
+  ],
+
   vite: {
     // https://github.com/tailwindlabs/tailwindcss/discussions/19655
     // @ts-expect-error - Vite plugin type mismatch between Nuxt and Tailwind
