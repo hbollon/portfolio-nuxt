@@ -127,7 +127,24 @@ Supporting content components:
 
 **Exit criteria**: `yarn generate` produces complete static HTML. Opening `index.html` shows all sections with real Strapi content.
 
-## Phase 8 — Optimization and polish
+## Phase 8 — Deployment pipeline
+
+**Estimated effort**: 0.5 day
+
+**Deliverables**:
+ - `.github/workflows/deploy.yml` with GitHub Actions pipeline.
+ - Trigger on `push` to `main` and manual `workflow_dispatch`.
+ - Node.js 24 setup with Yarn Berry cache and `yarn install --immutable`.
+ - `yarn generate` with Strapi env vars from GitHub Secrets.
+ - AWS OIDC authentication via `AWS_ROLE_ARN`.
+ - S3 sync of `.output/public` with `--delete`.
+ - CloudFront invalidation (`/*`).
+
+**Dependencies**: Strapi must be populated with real content and accessible from dev machine.
+
+**Exit criteria**: Workflow completes successfully on `main` and publishes the generated static site to S3 with CloudFront cache invalidated.
+
+## Phase 9 — Optimization and polish
 
 **Estimated effort**: 1-2 days
 
@@ -141,7 +158,7 @@ Supporting content components:
 
 **Exit criteria**: Lighthouse scores meet targets. No accessibility violations. Responsive layout verified on mobile, tablet, desktop.
 
-## Phase 9 — Documentation
+## Phase 10 — Documentation
 
 **Estimated effort**: 0.5 day
 
