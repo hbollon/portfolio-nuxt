@@ -23,7 +23,7 @@ const targetValue = props.external ? '_blank' : undefined
     :href="props.href"
     :rel="relValue"
     :target="targetValue"
-    class="text-star-gray hover:text-star-white inline-flex items-center gap-2 transition"
+    class="text-star-gray hover:text-star-white inline-flex items-center gap-2 break-words transition"
     :aria-label="props.label"
   >
     <span
@@ -31,7 +31,7 @@ const targetValue = props.external ? '_blank' : undefined
     >
       <Icon :name="props.icon" class="h-5 w-5" />
     </span>
-    <span v-if="props.showLabel" class="text-sm font-medium">
+    <span v-if="props.showLabel" class="text-sm leading-snug font-medium">
       {{ props.label }}
     </span>
   </a>

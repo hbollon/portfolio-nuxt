@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+import { nextTick, onMounted, onUnmounted } from 'vue'
 import { tsParticles } from '@tsparticles/engine'
 
 const prefersReducedMotion = ref(false)
@@ -16,7 +16,8 @@ const options = computed(() => ({
   },
   particles: {
     number: {
-      value: prefersReducedMotion.value ? 0 : 90,
+      // Particle count stays constant; reduced motion disables animations only.
+      value: 90,
       density: { enable: true, width: 1200, height: 800 },
     },
     color: { value: ['#f8fafc', '#a855f7', '#3b82f6', '#06b6d4'] },
@@ -39,7 +40,18 @@ const options = computed(() => ({
   },
 }))
 
-const initParticles = async () => {
+const initParticles = async (attempt = 0) => {
+  // ClientOnly renders after mount; retry until the host element exists.
+  const container = document.getElementById('particles-bg')
+  if (!container) {
+    if (attempt < 10) {
+      window.requestAnimationFrame(() => {
+        void initParticles(attempt + 1)
+      })
+    }
+    return
+  }
+
   // Load after the slim engine is registered in the client plugin.
   await tsParticles.load({ id: 'particles-bg', options: options.value })
 }
@@ -49,8 +61,10 @@ onMounted(() => {
     return
   }
 
+  // Respect user motion preferences (animations disabled but particles remain visible).
   prefersReducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  animationFrameId = window.requestAnimationFrame(() => {
+  animationFrameId = window.requestAnimationFrame(async () => {
+    await nextTick()
     void initParticles()
   })
 })
@@ -65,7 +79,7 @@ onUnmounted(() => {
 
 <template>
   <ClientOnly>
-    <div class="pointer-events-none fixed inset-0 -z-10" aria-hidden="true">
+    <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
       <div id="particles-bg" class="h-full w-full" />
     </div>
   </ClientOnly>

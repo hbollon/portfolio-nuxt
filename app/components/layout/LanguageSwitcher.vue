@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
 const { locale } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
 const localeCookie = useCookie<string>('i18n_redirected', { path: '/' })
@@ -10,6 +12,14 @@ const availableLocales: Array<{ code: LocaleCode; label: string }> = [
   { code: 'fr', label: 'FR' },
 ]
 
+// Avoid hydration mismatches by stripping hashes from locale switch links.
+const localeLinks = computed(() =>
+  availableLocales.map((item) => ({
+    ...item,
+    href: (switchLocalePath(item.code) ?? '/').split('#')[0],
+  }))
+)
+
 const setLocaleCookie = (code: string) => {
   localeCookie.value = code
 }
@@ -19,10 +29,10 @@ const setLocaleCookie = (code: string) => {
   <div
     class="border-star-gray/20 bg-space-void/50 flex items-center gap-2 rounded-full border px-2 py-1"
   >
-    <NuxtLink
-      v-for="item in availableLocales"
+    <a
+      v-for="item in localeLinks"
       :key="item.code"
-      :to="switchLocalePath(item.code)"
+      :href="item.href"
       class="rounded-full px-3 py-1 text-xs font-semibold tracking-wider uppercase transition"
       :class="
         locale === item.code
@@ -32,6 +42,6 @@ const setLocaleCookie = (code: string) => {
       @click="setLocaleCookie(item.code)"
     >
       {{ item.label }}
-    </NuxtLink>
+    </a>
   </div>
 </template>

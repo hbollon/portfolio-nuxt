@@ -29,7 +29,7 @@ const orbStyle = computed(() => {
       :style="orbStyle"
       aria-hidden="true"
     />
-    <Container>
+    <Container class="relative z-10">
       <div class="mx-auto flex max-w-4xl flex-col items-center gap-6 text-center">
         <span class="text-star-gray text-sm tracking-[0.3em] uppercase">
           {{ t('app.title') }}

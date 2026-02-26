@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { gsap } from 'gsap'
 
 const props = withDefaults(
@@ -14,6 +14,7 @@ const props = withDefaults(
 
 const current = ref('')
 const prefersReducedMotion = ref(false)
+let timeline: gsap.core.Timeline | null = null
 
 const cycle = () => {
   if (props.phrases.length === 0) {
@@ -22,7 +23,8 @@ const cycle = () => {
   }
 
   // Keep the timeline lightweight: switch text, hold, then repeat.
-  const timeline = gsap.timeline({ repeat: -1 })
+  timeline?.kill()
+  timeline = gsap.timeline({ repeat: -1 })
 
   for (const phrase of props.phrases) {
     timeline
@@ -53,9 +55,19 @@ watch(
   (value) => {
     if (prefersReducedMotion.value) {
       current.value = value[0] ?? ''
+      return
     }
+
+    // Rebuild the timeline when phrases change to avoid stale text.
+    cycle()
   }
 )
+
+onUnmounted(() => {
+  // Ensure GSAP timelines are released on unmount.
+  timeline?.kill()
+  timeline = null
+})
 </script>
 
 <template>

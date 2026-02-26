@@ -18,12 +18,38 @@ const navItems = computed<NavItem[]>(() => [
   { id: 'contact', label: t('nav.contact') },
 ])
 
+// Keep section IDs centralized to drive both scroll spy and anchor links.
+const sectionIds = computed(() => navItems.value.map((item) => item.id))
+
 const isScrolled = ref(false)
 const activeSection = ref('hero')
 const isMenuOpen = ref(false)
 
 const updateScrollState = () => {
   isScrolled.value = window.scrollY > 50
+}
+
+// Fall back to a position-based check to keep the active state stable
+// when IntersectionObserver thresholds are too coarse for short sections.
+const updateActiveSection = () => {
+  if (typeof window === 'undefined') {
+    return
+  }
+
+  const middle = window.scrollY + window.innerHeight * 0.35
+  for (const id of sectionIds.value) {
+    const section = document.getElementById(id)
+    if (!section) {
+      continue
+    }
+
+    const top = section.offsetTop
+    const bottom = top + section.offsetHeight
+    if (middle >= top && middle < bottom) {
+      activeSection.value = id
+      return
+    }
+  }
 }
 
 const onResize = () => {
@@ -36,12 +62,15 @@ const observer = ref<IntersectionObserver | null>(null)
 
 onMounted(() => {
   updateScrollState()
+  updateActiveSection()
   window.addEventListener('scroll', updateScrollState, { passive: true })
+  window.addEventListener('scroll', updateActiveSection, { passive: true })
   window.addEventListener('resize', onResize, { passive: true })
+  window.addEventListener('resize', updateActiveSection, { passive: true })
 
   // Scroll spy based on section IDs; labels are localized separately.
-  const sections = navItems.value
-    .map((item) => document.getElementById(item.id))
+  const sections = sectionIds.value
+    .map((id) => document.getElementById(id))
     .filter((section): section is HTMLElement => Boolean(section))
 
   observer.value = new IntersectionObserver(
@@ -64,7 +93,9 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('scroll', updateScrollState)
+  window.removeEventListener('scroll', updateActiveSection)
   window.removeEventListener('resize', onResize)
+  window.removeEventListener('resize', updateActiveSection)
   observer.value?.disconnect()
 })
 

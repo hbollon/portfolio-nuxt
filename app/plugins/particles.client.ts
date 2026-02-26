@@ -6,11 +6,6 @@ export default defineNuxtPlugin(async () => {
     return
   }
 
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  if (prefersReducedMotion) {
-    return
-  }
-
-  // Load the slim engine once; the component only provides options and mounting.
+  // Load the slim engine once; motion preferences are handled by component options.
   await loadSlim(tsParticles)
 })

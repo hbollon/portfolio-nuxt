@@ -31,7 +31,7 @@ const links = [
             <h3 class="text-star-white text-lg font-semibold">
               {{ t('contact.cta') }}
             </h3>
-            <div class="space-y-3">
+            <div class="grid gap-3 sm:grid-cols-2">
               <SocialLink
                 v-for="link in links"
                 :key="link.href"
