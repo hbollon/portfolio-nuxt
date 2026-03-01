@@ -73,4 +73,27 @@
     background-clip: text;
     color: transparent;
   }
+
+  .markdown > * + * {
+    margin-top: 0.75rem;
+  }
+
+  .markdown ul,
+  .markdown ol {
+    padding-left: 1.25rem;
+  }
+
+  .markdown ul {
+    list-style: disc;
+  }
+
+  .markdown ol {
+    list-style: decimal;
+  }
+
+  .markdown a {
+    color: var(--color-cosmic-cyan);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
 }
