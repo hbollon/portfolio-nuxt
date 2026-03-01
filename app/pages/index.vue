@@ -8,45 +8,76 @@ import type {
   Project,
   Technology,
 } from '../../shared/types/strapi'
+import { buildFallbackData } from '../utils/fallback-content'
+import enContent from '../../locales/content/en'
+import frContent from '../../locales/content/fr'
 
 const { locale } = useI18n()
+
 const strapi = useStrapi()
+const runtimeConfig = useRuntimeConfig()
 
 const localeKey = computed(() => locale.value)
+const hasStrapiConfig = computed(() => runtimeConfig.public.strapiEnabled)
+const fallbackData = computed(() => {
+  const content = localeKey.value === 'fr' ? frContent : enContent
+  return buildFallbackData(content, localeKey.value)
+})
 
-const [{ data: homepage }, { data: about }, { data: contact }] = await Promise.all([
-  useAsyncData<Homepage>(
-    () => `homepage-${localeKey.value}`,
-    () => strapi.getHomepage(localeKey.value)
-  ),
-  useAsyncData<About>(
-    () => `about-${localeKey.value}`,
-    () => strapi.getAbout(localeKey.value)
-  ),
-  useAsyncData<Contact>(
-    () => `contact-${localeKey.value}`,
-    () => strapi.getContact(localeKey.value)
-  ),
-])
+const { data: homepage } = await useAsyncData<Homepage>(
+  () => `homepage-${localeKey.value}`,
+  async () =>
+    import.meta.server && hasStrapiConfig.value
+      ? await strapi.getHomepage(localeKey.value)
+      : fallbackData.value.homepage
+)
 
-const [{ data: projects }, { data: experiences }, { data: educations }] = await Promise.all([
-  useAsyncData<Project[]>(
-    () => `projects-${localeKey.value}`,
-    () => strapi.getProjects(localeKey.value)
-  ),
-  useAsyncData<Experience[]>(
-    () => `experiences-${localeKey.value}`,
-    () => strapi.getExperiences(localeKey.value)
-  ),
-  useAsyncData<Education[]>(
-    () => `educations-${localeKey.value}`,
-    () => strapi.getEducations(localeKey.value)
-  ),
-])
+const { data: about } = await useAsyncData<About>(
+  () => `about-${localeKey.value}`,
+  async () =>
+    import.meta.server && hasStrapiConfig.value
+      ? await strapi.getAbout(localeKey.value)
+      : fallbackData.value.about
+)
+
+const { data: contact } = await useAsyncData<Contact>(
+  () => `contact-${localeKey.value}`,
+  async () =>
+    import.meta.server && hasStrapiConfig.value
+      ? await strapi.getContact(localeKey.value)
+      : fallbackData.value.contact
+)
+
+const { data: projects } = await useAsyncData<Project[]>(
+  () => `projects-${localeKey.value}`,
+  async () =>
+    import.meta.server && hasStrapiConfig.value
+      ? await strapi.getProjects(localeKey.value)
+      : fallbackData.value.projects
+)
+
+const { data: experiences } = await useAsyncData<Experience[]>(
+  () => `experiences-${localeKey.value}`,
+  async () =>
+    import.meta.server && hasStrapiConfig.value
+      ? await strapi.getExperiences(localeKey.value)
+      : fallbackData.value.experiences
+)
+
+const { data: educations } = await useAsyncData<Education[]>(
+  () => `educations-${localeKey.value}`,
+  async () =>
+    import.meta.server && hasStrapiConfig.value
+      ? await strapi.getEducations(localeKey.value)
+      : fallbackData.value.educations
+)
 
 const { data: technologies } = await useAsyncData<Technology[]>(
-  () => 'technologies',
-  () => strapi.getTechnologies()
+  () => `technologies-${localeKey.value}`,
+  async () =>
+    import.meta.server && hasStrapiConfig.value
+      ? await strapi.getTechnologies()
+      : fallbackData.value.technologies
 )
 
 const featuredProjects = computed(() =>

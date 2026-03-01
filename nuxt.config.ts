@@ -39,6 +39,7 @@ export default defineNuxtConfig({
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || '',
       googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID || '',
+      strapiEnabled: Boolean(process.env.STRAPI_URL && process.env.STRAPI_TOKEN),
     },
   },
 
