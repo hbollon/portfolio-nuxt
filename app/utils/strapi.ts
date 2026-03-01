@@ -17,16 +17,10 @@ export const formatStrapiDate = (value?: string | null, locale = 'en-US'): strin
   }).format(date)
 }
 
-// Returns an absolute media URL, handling Strapi relative paths and CDN URLs.
 export const getStrapiMedia = (media?: StrapiMedia | null): string => {
   if (!media?.url) {
     return ''
   }
 
-  if (media.url.startsWith('http://') || media.url.startsWith('https://')) {
-    return media.url
-  }
-
-  const baseUrl = useRuntimeConfig().strapiUrl
-  return `${baseUrl.replace(/\/$/, '')}/${media.url.replace(/^\//, '')}`
+  return media.url
 }
