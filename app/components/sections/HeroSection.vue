@@ -37,14 +37,14 @@ const orbStyle = computed(() => {
     <Container class="relative z-10">
       <div class="mx-auto flex max-w-4xl flex-col items-center gap-6 text-center">
         <span class="text-star-gray text-sm tracking-[0.3em] uppercase">
-          {{ t('app.title') }}
+          {{ homepage.appTitle }}
         </span>
         <h1 class="text-star-white text-3xl font-extrabold tracking-tight md:text-5xl lg:text-6xl">
           {{ homepage.heroTitle }}
           <span class="text-gradient block">{{ homepage.heroSubtitle }}</span>
         </h1>
         <p class="text-star-gray max-w-2xl text-base leading-relaxed md:text-lg">
-          {{ t('hero.description') }}
+          {{ homepage.heroDescription }}
         </p>
         <div class="flex flex-wrap items-center justify-center gap-4">
           <Button tag="a" :href="homepage.heroCtaLink" size="lg">
@@ -54,7 +54,7 @@ const orbStyle = computed(() => {
             {{ t('hero.ctaSecondary') }}
           </Button>
         </div>
-        <div class="text-star-gray flex items-center gap-2 text-sm">
+        <div class="text-star-gray flex items-center gap-1 text-sm">
           <TypedText :phrases="phrases" />
           <span>{{ t('hero.typedSuffix') }}</span>
         </div>

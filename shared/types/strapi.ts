@@ -134,8 +134,10 @@ export interface About extends StrapiMeta {
 
 export interface Homepage extends StrapiMeta {
   id: StrapiId
+  appTitle: string
   heroTitle: string
   heroSubtitle: string
+  heroDescription: string
   heroCtaText: string
   heroCtaLink: string
   featuredProjects?: Project[] | null

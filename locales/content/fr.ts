@@ -2,8 +2,10 @@ import type { LocaleContent } from '../../app/utils/fallback-content'
 
 const content: LocaleContent = {
   homepage: {
+    appTitle: 'Hugo Bollon',
     heroTitle: 'Construire des plateformes fiables',
     heroSubtitle: 'pour des equipes produit modernes',
+    heroDescription: 'Je conçois, automatise et exploite des systèmes cloud-natifs avec un focus sur la fiabilité, la sécurité et l\'expérience développeur.',
     heroCtaText: 'Explorer les projets',
     heroCtaLink: '#projects',
     featuredProjectSlugs: [

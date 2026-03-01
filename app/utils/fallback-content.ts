@@ -76,8 +76,10 @@ export interface LocaleAbout {
 }
 
 export interface LocaleHomepage {
+  appTitle: string
   heroTitle: string
   heroSubtitle: string
+  heroDescription: string
   heroCtaText: string
   heroCtaLink: string
   featuredProjectSlugs?: string[]
@@ -197,8 +199,10 @@ export const buildFallbackData = (content: LocaleContent, locale: string): Fallb
   const homepage: Homepage = {
     ...meta,
     id: 1,
+    appTitle: content.homepage.appTitle,
     heroTitle: content.homepage.heroTitle,
     heroSubtitle: content.homepage.heroSubtitle,
+    heroDescription: content.homepage.heroDescription,
     heroCtaText: content.homepage.heroCtaText,
     heroCtaLink: content.homepage.heroCtaLink,
     featuredProjects: featuredProjects.length > 0 ? featuredProjects : null,
