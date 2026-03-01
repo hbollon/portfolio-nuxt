@@ -32,6 +32,22 @@ export const useStrapi = () => {
   const { strapiUrl, strapiToken } = useRuntimeConfig()
   const api = createStrapiApi({ baseUrl: strapiUrl, token: strapiToken })
 
+  const normalizeLocale = (locale?: string): string | undefined => {
+    if (!locale) {
+      return locale
+    }
+
+    if (locale === 'fr') {
+      return 'fr-FR'
+    }
+
+    if (locale === 'en-US') {
+      return 'en'
+    }
+
+    return locale
+  }
+
   const normalizeMedia = (media?: StrapiMedia | null): StrapiMedia | null => {
     if (!media?.url) {
       return media ?? null
@@ -81,7 +97,7 @@ export const useStrapi = () => {
   })
 
   const getHomepage = async (locale?: string): Promise<Homepage> => {
-    const response = await api.getHomepage(locale)
+    const response = await api.getHomepage(normalizeLocale(locale))
     const data = response.data
 
     return {
@@ -92,7 +108,7 @@ export const useStrapi = () => {
   }
 
   const getAbout = async (locale?: string): Promise<About> => {
-    const response = await api.getAbout(locale)
+    const response = await api.getAbout(normalizeLocale(locale))
     const data = response.data
 
     return {
@@ -103,18 +119,18 @@ export const useStrapi = () => {
   }
 
   const getContact = async (locale?: string): Promise<Contact> => {
-    const response = await api.getContact(locale)
+    const response = await api.getContact(normalizeLocale(locale))
 
     return response.data
   }
 
   const getProjects = async (locale?: string): Promise<Project[]> => {
-    const response = await api.getProjects(locale)
+    const response = await api.getProjects(normalizeLocale(locale))
     return response.data.map(normalizeProject)
   }
 
   const getExperiences = async (locale?: string): Promise<Experience[]> => {
-    const response = await api.getExperiences(locale)
+    const response = await api.getExperiences(normalizeLocale(locale))
     return response.data.map((item) => ({
       ...item,
       logo: normalizeMedia(item.logo),
@@ -122,7 +138,7 @@ export const useStrapi = () => {
   }
 
   const getEducations = async (locale?: string): Promise<Education[]> => {
-    const response = await api.getEducations(locale)
+    const response = await api.getEducations(normalizeLocale(locale))
     return response.data.map((item) => ({
       ...item,
       logo: normalizeMedia(item.logo),
