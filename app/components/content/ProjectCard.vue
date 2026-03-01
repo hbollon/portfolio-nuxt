@@ -1,11 +1,34 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import type { Project, ProjectLink, Technology } from '../../../shared/types/strapi'
+
 const props = defineProps<{
   title: string
   description: string
   imageUrl?: string
-  technologies: Array<{ name: string; icon?: string; color?: string }>
-  links: Array<{ label: string; url: string; icon: string }>
+  technologies: Technology[]
+  links: ProjectLink[]
+  status?: Project['projectStatus']
 }>()
+
+const linkIconMap: Record<NonNullable<ProjectLink['type']>, string> = {
+  github: 'mdi:github',
+  live: 'mdi:open-in-new',
+  demo: 'mdi:play-circle',
+  article: 'mdi:book-open-variant',
+}
+
+const statusColorMap: Record<NonNullable<Project['projectStatus']>, string> = {
+  completed: '#22c55e',
+  in_progress: '#38bdf8',
+  archived: '#94a3b8',
+}
+
+const { t } = useI18n()
+
+const statusLabel = computed(() => (props.status ? t(`projects.status.${props.status}`) : ''))
+
+const statusColor = computed(() => (props.status ? statusColorMap[props.status] : undefined))
 </script>
 
 <template>
@@ -20,7 +43,10 @@ const props = defineProps<{
     </div>
     <div class="space-y-4">
       <div>
-        <h3 class="text-star-white text-xl font-semibold">{{ props.title }}</h3>
+        <div class="flex flex-wrap items-center gap-3">
+          <h3 class="text-star-white text-xl font-semibold">{{ props.title }}</h3>
+          <Badge v-if="props.status" :label="statusLabel" icon="mdi:circle" :color="statusColor" />
+        </div>
         <p class="text-star-gray mt-2 text-sm leading-relaxed">
           {{ props.description }}
         </p>
@@ -30,8 +56,8 @@ const props = defineProps<{
           v-for="tech in props.technologies"
           :key="tech.name"
           :label="tech.name"
-          :icon="tech.icon"
-          :color="tech.color"
+          :icon="tech.icon ?? undefined"
+          :color="tech.color ?? undefined"
         />
       </div>
       <div class="flex flex-wrap gap-4">
@@ -43,7 +69,7 @@ const props = defineProps<{
           rel="noopener noreferrer"
           target="_blank"
         >
-          <Icon :name="link.icon" class="h-4 w-4" />
+          <Icon :name="link.type ? linkIconMap[link.type] : 'mdi:link-variant'" class="h-4 w-4" />
           {{ link.label }}
         </a>
       </div>

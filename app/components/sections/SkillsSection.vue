@@ -1,34 +1,55 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { Technology, TechnologyCategory } from '../../../shared/types/strapi'
+
+const props = defineProps<{
+  technologies: Technology[]
+}>()
 
 const { t } = useI18n()
 
-const categories = computed(() => [
-  {
-    label: t('skills.categories.languages'),
-    items: [
-      { label: 'Go', icon: 'devicon:go', color: '#00add8' },
-      { label: 'TypeScript', icon: 'devicon:typescript', color: '#3178c6' },
-      { label: 'Python', icon: 'devicon:python', color: '#3776ab' },
-    ],
-  },
-  {
-    label: t('skills.categories.platforms'),
-    items: [
-      { label: 'Kubernetes', icon: 'devicon:kubernetes', color: '#326ce5' },
-      { label: 'AWS', icon: 'devicon:amazonwebservices', color: '#ff9900' },
-      { label: 'Terraform', icon: 'devicon:terraform', color: '#7b42bc' },
-    ],
-  },
-  {
-    label: t('skills.categories.tooling'),
-    items: [
-      { label: 'Grafana', icon: 'devicon:grafana', color: '#f46800' },
-      { label: 'Prometheus', icon: 'devicon:prometheus', color: '#e6522c' },
-      { label: 'Docker', icon: 'devicon:docker', color: '#2496ed' },
-    ],
-  },
-])
+const categories = computed(() => {
+  const groups = new Map<TechnologyCategory, Technology[]>()
+
+  for (const tech of props.technologies) {
+    const items = groups.get(tech.category) ?? []
+    items.push(tech)
+    groups.set(tech.category, items)
+  }
+
+  const orderedCategories: TechnologyCategory[] = [
+    'language',
+    'framework',
+    'cloud',
+    'database',
+    'tool',
+    'other',
+  ]
+
+  const categoryLabelMap: Record<TechnologyCategory, string> = {
+    language: t('skills.categories.languages'),
+    framework: t('skills.categories.frameworks'),
+    tool: t('skills.categories.tooling'),
+    cloud: t('skills.categories.platforms'),
+    database: t('skills.categories.databases'),
+    other: t('skills.categories.other'),
+  }
+
+  return orderedCategories
+    .map((category) => {
+      const items = groups.get(category) ?? []
+      const sortedItems = [...items].sort((a, b) => {
+        const orderDiff = (a.order ?? 0) - (b.order ?? 0)
+        return orderDiff !== 0 ? orderDiff : a.name.localeCompare(b.name)
+      })
+
+      return {
+        label: categoryLabelMap[category],
+        items: sortedItems,
+      }
+    })
+    .filter((category) => category.items.length > 0)
+})
 </script>
 
 <template>
@@ -62,10 +83,10 @@ const categories = computed(() => [
               <div class="flex flex-wrap gap-3">
                 <SkillBadge
                   v-for="item in category.items"
-                  :key="item.label"
-                  :label="item.label"
-                  :icon="item.icon"
-                  :color="item.color"
+                  :key="item.slug"
+                  :label="item.name"
+                  :icon="item.icon ?? undefined"
+                  :color="item.color ?? undefined"
                 />
               </div>
             </Card>

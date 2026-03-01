@@ -1,11 +1,32 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import type { About, SocialPlatform } from '../../../shared/types/strapi'
+import { renderMarkdown } from '../../utils/markdown'
+import { getStrapiMedia } from '../../utils/strapi'
+
+const props = defineProps<{
+  about: About
+}>()
+
 const { t } = useI18n()
 
-const highlights = [
-  { label: 'Go', icon: 'devicon:go', color: '#00add8' },
-  { label: 'Kubernetes', icon: 'devicon:kubernetes', color: '#326ce5' },
-  { label: 'AWS', icon: 'devicon:amazonwebservices', color: '#ff9900' },
-]
+const profileImage = computed(() => getStrapiMedia(props.about.profilePicture))
+const resumeUrl = computed(() => getStrapiMedia(props.about.resume))
+const bioHtml = computed(() => renderMarkdown(props.about.bio))
+
+const githubLink = computed(() =>
+  props.about.socialLinks?.find((link) => link.platform === 'github')
+)
+
+const primarySocial = computed(() => githubLink.value ?? props.about.socialLinks?.[0])
+
+const socialIconMap: Record<SocialPlatform, string> = {
+  github: 'mdi:github',
+  linkedin: 'mdi:linkedin',
+  twitter: 'mdi:twitter',
+  email: 'mdi:email',
+  website: 'mdi:web',
+}
 </script>
 
 <template>
@@ -15,32 +36,32 @@ const highlights = [
         <div class="space-y-6">
           <ScrollReveal>
             <h2 class="text-star-white text-3xl font-bold md:text-4xl">
-              {{ t('about.title') }}
+              {{ props.about.title }}
             </h2>
           </ScrollReveal>
           <ScrollReveal :delay="150">
             <p class="text-star-gray max-w-prose text-base leading-relaxed">
-              {{ t('about.description') }}
+              {{ props.about.subtitle }}
             </p>
           </ScrollReveal>
           <ScrollReveal :delay="250">
             <div class="flex flex-wrap gap-3">
               <SkillBadge
-                v-for="item in highlights"
-                :key="item.label"
-                :label="item.label"
-                :icon="item.icon"
-                :color="item.color"
+                v-for="skill in props.about.highlightedSkills ?? []"
+                :key="skill.slug"
+                :label="skill.name"
+                :icon="skill.icon ?? undefined"
+                :color="skill.color ?? undefined"
               />
             </div>
           </ScrollReveal>
           <ScrollReveal :delay="350">
             <div class="flex flex-wrap gap-4">
-              <Button tag="a" href="#" variant="secondary">
+              <Button v-if="resumeUrl" tag="a" :href="resumeUrl" variant="secondary">
                 {{ t('about.resume') }}
               </Button>
-              <Button tag="a" href="https://github.com/hbollon" variant="ghost">
-                {{ t('about.github') }}
+              <Button v-if="primarySocial" tag="a" :href="primarySocial.url" variant="ghost">
+                {{ githubLink ? t('about.github') : primarySocial.label }}
               </Button>
             </div>
           </ScrollReveal>
@@ -51,17 +72,36 @@ const highlights = [
               <span class="text-star-gray text-sm tracking-[0.25em] uppercase">
                 {{ t('about.profileLabel') }}
               </span>
-              <h3 class="text-star-white text-xl font-semibold">
-                {{ t('about.profileTitle') }}
-              </h3>
-              <p class="text-star-gray text-sm leading-relaxed">
-                {{ t('about.profileBody') }}
-              </p>
+              <div class="flex items-center gap-4">
+                <div
+                  v-if="profileImage"
+                  class="border-star-gray/20 h-16 w-16 overflow-hidden rounded-full border"
+                >
+                  <img
+                    :src="profileImage"
+                    :alt="props.about.title"
+                    class="h-full w-full object-cover"
+                  />
+                </div>
+                <h3 class="text-star-white text-xl font-semibold">
+                  {{ t('about.profileTitle') }}
+                </h3>
+              </div>
+              <!-- eslint-disable vue/no-v-html -->
+              <div class="markdown text-star-gray text-sm leading-relaxed" v-html="bioHtml" />
+              <!-- eslint-enable vue/no-v-html -->
             </div>
             <div class="border-star-gray/10 mt-6 border-t pt-6">
-              <p class="text-star-gray font-mono text-xs">
-                {{ t('about.location') }}
-              </p>
+              <div class="flex flex-wrap gap-3">
+                <SocialLink
+                  v-for="link in props.about.socialLinks ?? []"
+                  :key="link.url"
+                  :href="link.url"
+                  :icon="socialIconMap[link.platform]"
+                  :label="link.label"
+                  :show-label="true"
+                />
+              </div>
             </div>
           </Card>
         </ScrollReveal>

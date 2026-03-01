@@ -1,40 +1,24 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { Project } from '../../../shared/types/strapi'
+import { getStrapiMedia } from '../../utils/strapi'
+
+const props = defineProps<{
+  projects: Project[]
+}>()
 
 const { t } = useI18n()
 
-const projects = computed(() => [
-  {
-    title: t('projects.items.edge.title'),
-    description: t('projects.items.edge.description'),
-    imageUrl:
-      'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=1200&q=80',
-    technologies: [
-      { name: 'Go', icon: 'devicon:go', color: '#00add8' },
-      { name: 'Kubernetes', icon: 'devicon:kubernetes', color: '#326ce5' },
-      { name: 'Grafana', icon: 'devicon:grafana', color: '#f46800' },
-    ],
-    links: [
-      { label: t('projects.links.caseStudy'), url: '#', icon: 'mdi:book-open-variant' },
-      { label: t('projects.links.github'), url: 'https://github.com/hbollon', icon: 'mdi:github' },
-    ],
-  },
-  {
-    title: t('projects.items.observability.title'),
-    description: t('projects.items.observability.description'),
-    imageUrl:
-      'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80',
-    technologies: [
-      { name: 'Prometheus', icon: 'devicon:prometheus', color: '#e6522c' },
-      { name: 'Terraform', icon: 'devicon:terraform', color: '#7b42bc' },
-      { name: 'AWS', icon: 'devicon:amazonwebservices', color: '#ff9900' },
-    ],
-    links: [
-      { label: t('projects.links.live'), url: '#', icon: 'mdi:open-in-new' },
-      { label: t('projects.links.github'), url: 'https://github.com/hbollon', icon: 'mdi:github' },
-    ],
-  },
-])
+const projectCards = computed(() =>
+  props.projects.map((project) => ({
+    title: project.title,
+    description: project.shortDescription,
+    imageUrl: getStrapiMedia(project.thumbnail),
+    technologies: project.technologies ?? [],
+    links: project.links ?? [],
+    status: project.projectStatus ?? undefined,
+  }))
+)
 </script>
 
 <template>
@@ -54,7 +38,7 @@ const projects = computed(() => [
 
         <div class="grid gap-8 lg:grid-cols-2">
           <ScrollReveal
-            v-for="(project, index) in projects"
+            v-for="(project, index) in projectCards"
             :key="project.title"
             :delay="150 + index * 100"
           >

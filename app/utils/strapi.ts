@@ -1,7 +1,7 @@
 import type { StrapiMedia } from '../../shared/types/strapi'
 
 // Formats an ISO date into a compact month/year label.
-export const formatStrapiDate = (value?: string | null): string => {
+export const formatStrapiDate = (value?: string | null, locale = 'en-US'): string => {
   if (!value) {
     return ''
   }
@@ -11,7 +11,7 @@ export const formatStrapiDate = (value?: string | null): string => {
     return ''
   }
 
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat(locale, {
     year: 'numeric',
     month: 'short',
   }).format(date)

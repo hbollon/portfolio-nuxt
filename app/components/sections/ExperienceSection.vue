@@ -1,49 +1,49 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { Education, Experience } from '../../../shared/types/strapi'
+import { renderMarkdown } from '../../utils/markdown'
+import { formatStrapiDate, getStrapiMedia } from '../../utils/strapi'
 
-const { t } = useI18n()
+const props = defineProps<{
+  experiences: Experience[]
+  educations: Education[]
+}>()
 
-// Timeline items are computed to react to locale changes.
-const timelineItems = computed(() => [
-  {
-    type: 'work',
-    title: t('experience.items.sre.title'),
-    company: t('experience.items.sre.company'),
-    period: t('experience.items.sre.period'),
-    location: t('experience.items.sre.location'),
-    description: t('experience.items.sre.description'),
-    technologies: [
-      { name: 'Go', icon: 'devicon:go', color: '#00add8' },
-      { name: 'Kubernetes', icon: 'devicon:kubernetes', color: '#326ce5' },
-      { name: 'Terraform', icon: 'devicon:terraform', color: '#7b42bc' },
-    ],
-  },
-  {
-    type: 'work',
-    title: t('experience.items.platform.title'),
-    company: t('experience.items.platform.company'),
-    period: t('experience.items.platform.period'),
-    location: t('experience.items.platform.location'),
-    description: t('experience.items.platform.description'),
-    technologies: [
-      { name: 'AWS', icon: 'devicon:amazonwebservices', color: '#ff9900' },
-      { name: 'Docker', icon: 'devicon:docker', color: '#2496ed' },
-      { name: 'Grafana', icon: 'devicon:grafana', color: '#f46800' },
-    ],
-  },
-  {
-    type: 'education',
-    title: t('experience.education.msc.title'),
-    company: t('experience.education.msc.school'),
-    period: t('experience.education.msc.period'),
-    location: t('experience.education.msc.location'),
-    description: t('experience.education.msc.description'),
-    technologies: [
-      { name: 'Distributed Systems', icon: 'mdi:server-network', color: '#3b82f6' },
-      { name: 'Networking', icon: 'mdi:lan', color: '#06b6d4' },
-    ],
-  },
-])
+const { locale, t } = useI18n()
+
+const timelineItems = computed(() => {
+  const experienceItems = props.experiences.map((item) => {
+    const isCurrent = item.isCurrent ?? !item.endDate
+
+    return {
+      title: item.position,
+      company: item.company,
+      period: `${formatStrapiDate(item.startDate, locale.value)} — ${
+        isCurrent
+          ? t('experience.current')
+          : formatStrapiDate(item.endDate, locale.value) || t('experience.current')
+      }`,
+      location: item.location,
+      description: renderMarkdown(item.description),
+      technologies: item.technologies ?? [],
+      logoUrl: getStrapiMedia(item.logo),
+      current: isCurrent,
+    }
+  })
+
+  const educationItems = props.educations.map((item) => ({
+    title: item.degree,
+    company: item.institution,
+    period: `${formatStrapiDate(item.startDate, locale.value)} — ${formatStrapiDate(item.endDate, locale.value)}`,
+    location: item.location,
+    description: renderMarkdown(item.field),
+    details: renderMarkdown(item.description) || undefined,
+    technologies: [],
+    logoUrl: getStrapiMedia(item.logo),
+  }))
+
+  return [...experienceItems, ...educationItems]
+})
 </script>
 
 <template>

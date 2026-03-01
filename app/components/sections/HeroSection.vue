@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { Homepage } from '../../../shared/types/strapi'
+
+defineProps<{
+  homepage: Homepage
+}>()
 
 const { t } = useI18n()
 const { y } = useWindowScroll()
@@ -35,15 +40,15 @@ const orbStyle = computed(() => {
           {{ t('app.title') }}
         </span>
         <h1 class="text-star-white text-3xl font-extrabold tracking-tight md:text-5xl lg:text-6xl">
-          {{ t('hero.title') }}
-          <span class="text-gradient block">{{ t('hero.subtitle') }}</span>
+          {{ homepage.heroTitle }}
+          <span class="text-gradient block">{{ homepage.heroSubtitle }}</span>
         </h1>
         <p class="text-star-gray max-w-2xl text-base leading-relaxed md:text-lg">
           {{ t('hero.description') }}
         </p>
         <div class="flex flex-wrap items-center justify-center gap-4">
-          <Button tag="a" href="#projects" size="lg">
-            {{ t('hero.ctaPrimary') }}
+          <Button tag="a" :href="homepage.heroCtaLink" size="lg">
+            {{ homepage.heroCtaText }}
           </Button>
           <Button tag="a" href="#contact" variant="secondary" size="lg">
             {{ t('hero.ctaSecondary') }}

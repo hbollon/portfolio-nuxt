@@ -32,6 +32,7 @@
     "location": "Based in Grenoble, France"
   },
   "experience": {
+    "current": "Current",
     "title": "Experience",
     "subtitle": "Recent roles and the systems I helped scale.",
     "work": "Work",
@@ -67,13 +68,21 @@
     "subtitle": "Core technologies and platforms I use every day.",
     "categories": {
       "languages": "Languages",
+      "frameworks": "Frameworks",
       "platforms": "Platforms",
-      "tooling": "Tooling"
+      "tooling": "Tooling",
+      "databases": "Databases",
+      "other": "Other"
     }
   },
   "projects": {
     "title": "Projects",
     "subtitle": "Selected initiatives focused on reliability, automation, and scale.",
+    "status": {
+      "completed": "Completed",
+      "in_progress": "In progress",
+      "archived": "Archived"
+    },
     "links": {
       "caseStudy": "Case study",
       "github": "GitHub",
@@ -94,6 +103,7 @@
     "title": "Contact",
     "description": "Let’s connect if you’re looking for a DevOps partner who cares about delivery and reliability.",
     "status": "Available for new missions",
+    "unavailable": "Currently unavailable",
     "location": "Grenoble, France",
     "cta": "Let’s talk",
     "ctaButton": "Schedule a conversation"

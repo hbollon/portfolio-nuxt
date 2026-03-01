@@ -32,6 +32,7 @@
     "location": "Basé à Grenoble, France"
   },
   "experience": {
+    "current": "En poste",
     "title": "Expérience",
     "subtitle": "Rôles récents et plateformes que j’ai aidé à faire évoluer.",
     "work": "Expérience",
@@ -67,13 +68,21 @@
     "subtitle": "Technologies et plateformes que j’utilise au quotidien.",
     "categories": {
       "languages": "Langages",
+      "frameworks": "Frameworks",
       "platforms": "Plateformes",
-      "tooling": "Outillage"
+      "tooling": "Outillage",
+      "databases": "Bases de données",
+      "other": "Autres"
     }
   },
   "projects": {
     "title": "Projets",
     "subtitle": "Sélection d’initiatives orientées fiabilité, automatisation et scale.",
+    "status": {
+      "completed": "Terminé",
+      "in_progress": "En cours",
+      "archived": "Archivé"
+    },
     "links": {
       "caseStudy": "Étude de cas",
       "github": "GitHub",
@@ -94,6 +103,7 @@
     "title": "Contact",
     "description": "Échangeons si vous cherchez un partenaire DevOps orienté delivery et fiabilité.",
     "status": "Disponible pour de nouvelles missions",
+    "unavailable": "Indisponible actuellement",
     "location": "Grenoble, France",
     "cta": "Discutons",
     "ctaButton": "Planifier un échange"

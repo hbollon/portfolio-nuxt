@@ -1,11 +1,46 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import type { Contact } from '../../../shared/types/strapi'
+
+const props = defineProps<{
+  contact: Contact
+}>()
+
 const { t } = useI18n()
 
-const links = [
-  { label: 'GitHub', href: 'https://github.com/hbollon', icon: 'mdi:github' },
-  { label: 'LinkedIn', href: 'https://linkedin.com/in/hugobollon/', icon: 'mdi:linkedin' },
-  { label: 'Email', href: 'mailto:hugo@hugobollon.dev', icon: 'mdi:email' },
-]
+const contactLinks = computed(() => {
+  const methods = props.contact.contactMethods ?? []
+  if (methods.length === 0) {
+    return [
+      { label: props.contact.email, href: `mailto:${props.contact.email}`, icon: 'mdi:email' },
+    ]
+  }
+
+  return methods.map((method) => {
+    const rawValue = method.value.trim()
+    const lowerValue = rawValue.toLowerCase()
+    const href =
+      lowerValue.startsWith('http') ||
+      lowerValue.startsWith('mailto:') ||
+      lowerValue.startsWith('tel:')
+        ? rawValue
+        : rawValue.includes('@')
+          ? `mailto:${rawValue}`
+          : rawValue.startsWith('+')
+            ? `tel:${rawValue}`
+            : rawValue
+
+    return {
+      label: method.method,
+      href,
+      icon: method.icon ?? 'mdi:link-variant',
+    }
+  })
+})
+
+const availabilityLabel = computed(() =>
+  props.contact.availableForWork ? t('contact.status') : t('contact.unavailable')
+)
 </script>
 
 <template>
@@ -15,13 +50,17 @@ const links = [
         <ScrollReveal>
           <div class="space-y-4">
             <h2 class="text-star-white text-3xl font-bold md:text-4xl">
-              {{ t('contact.title') }}
+              {{ props.contact.title }}
             </h2>
             <p class="text-star-gray max-w-xl text-base leading-relaxed">
-              {{ t('contact.description') }}
+              {{ props.contact.description }}
             </p>
             <div class="flex flex-wrap gap-3">
-              <Badge :label="t('contact.status')" icon="mdi:check-circle" color="#22c55e" />
+              <Badge
+                :label="availabilityLabel"
+                :icon="props.contact.availableForWork ? 'mdi:check-circle' : 'mdi:close-circle'"
+                :color="props.contact.availableForWork ? '#22c55e' : '#f97316'"
+              />
               <Badge :label="t('contact.location')" icon="mdi:map-marker" color="#3b82f6" />
             </div>
           </div>
@@ -33,7 +72,7 @@ const links = [
             </h3>
             <div class="grid gap-3 sm:grid-cols-2">
               <SocialLink
-                v-for="link in links"
+                v-for="link in contactLinks"
                 :key="link.href"
                 :href="link.href"
                 :icon="link.icon"
@@ -41,7 +80,13 @@ const links = [
                 :show-label="true"
               />
             </div>
-            <Button class="w-full" variant="primary" size="lg">
+            <Button
+              class="w-full"
+              variant="primary"
+              size="lg"
+              tag="a"
+              :href="`mailto:${props.contact.email}`"
+            >
               {{ t('contact.ctaButton') }}
             </Button>
           </Card>
