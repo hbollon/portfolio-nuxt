@@ -1,4 +1,5 @@
 import type { SharedSeo } from '../../shared/types/strapi'
+import { getStrapiMedia } from '../utils/strapi'
 
 const DEFAULT_TITLE = 'Hugo Bollon — DevOps Engineer & Fullstack Dev'
 const DEFAULT_DESCRIPTION =
@@ -17,7 +18,9 @@ export const useSeo = (seo?: SharedSeo | null) => {
 
   const metaTitle = seo?.metaTitle ?? DEFAULT_TITLE
   const metaDescription = seo?.metaDescription ?? DEFAULT_DESCRIPTION
-  const ogImage = seo?.ogImage?.url ?? `${siteUrl.replace(/\/$/, '')}/og-image.jpg`
+  const ogImage = seo?.ogImage
+    ? getStrapiMedia(seo.ogImage)
+    : `${siteUrl.replace(/\/$/, '')}/og-image.jpg`
   const canonical = `${siteUrl.replace(/\/$/, '')}${route.path}`
 
   // Centralize all meta tags so every page can share the same SEO rules.
