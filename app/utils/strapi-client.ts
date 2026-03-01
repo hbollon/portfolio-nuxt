@@ -88,6 +88,9 @@ export const createStrapiApi = (options: StrapiClientOptions) => {
     return await client.get<StrapiCollectionResponse<Technology>>('/technologies', {
       query: {
         sort: ['order:asc'],
+        pagination: {
+          pageSize: 200,
+        },
       },
     })
   }
