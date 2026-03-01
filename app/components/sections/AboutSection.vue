@@ -69,13 +69,13 @@ const socialIconMap: Record<SocialPlatform, string> = {
         <ScrollReveal :delay="150">
           <Card class="flex h-full flex-col justify-between">
             <div class="space-y-4">
-              <span class="text-star-gray text-sm tracking-[0.25em] uppercase">
+              <span class="text-star-gray mb-2 inline-block text-sm tracking-[0.25em] uppercase">
                 {{ t('about.profileLabel') }}
               </span>
-              <div class="flex items-center gap-4">
+              <div class="flex items-start gap-5">
                 <div
                   v-if="profileImage"
-                  class="border-star-gray/20 h-16 w-16 overflow-hidden rounded-full border"
+                  class="border-star-gray/20 h-24 w-24 shrink-0 overflow-hidden rounded-full border md:h-28 md:w-28"
                 >
                   <img
                     :src="profileImage"
@@ -83,13 +83,13 @@ const socialIconMap: Record<SocialPlatform, string> = {
                     class="h-full w-full object-cover"
                   />
                 </div>
-                <h3 class="text-star-white text-xl font-semibold">
-                  {{ t('about.profileTitle') }}
-                </h3>
+                <!-- eslint-disable vue/no-v-html -->
+                <div
+                  class="markdown text-star-gray min-w-0 flex-1 text-sm leading-relaxed"
+                  v-html="bioHtml"
+                />
+                <!-- eslint-enable vue/no-v-html -->
               </div>
-              <!-- eslint-disable vue/no-v-html -->
-              <div class="markdown text-star-gray text-sm leading-relaxed" v-html="bioHtml" />
-              <!-- eslint-enable vue/no-v-html -->
             </div>
             <div class="border-star-gray/10 mt-6 border-t pt-6">
               <div class="flex flex-wrap gap-3">

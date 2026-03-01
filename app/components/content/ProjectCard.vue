@@ -32,16 +32,19 @@ const statusColor = computed(() => (props.status ? statusColorMap[props.status] 
 </script>
 
 <template>
-  <Card class="group overflow-hidden">
-    <div v-if="props.imageUrl" class="overflow-hidden rounded-xl">
+  <Card class="group flex h-full flex-col overflow-hidden">
+    <div
+      v-if="props.imageUrl"
+      class="bg-nebula-ink/40 overflow-hidden rounded-xl px-2 py-3 sm:px-3"
+    >
       <img
         :src="props.imageUrl"
         :alt="props.title"
-        class="h-38 w-full object-cover transition duration-200 group-hover:scale-105"
+        class="h-40 w-full object-contain transition duration-200 group-hover:scale-[1.02] sm:h-44"
         loading="lazy"
       />
     </div>
-    <div class="mt-2 space-y-4">
+    <div class="mt-2 flex flex-1 flex-col space-y-4">
       <div>
         <div class="flex flex-wrap items-center gap-3">
           <h3 class="text-star-white text-xl font-semibold">{{ props.title }}</h3>
@@ -60,7 +63,7 @@ const statusColor = computed(() => (props.status ? statusColorMap[props.status] 
           :color="tech.color ?? undefined"
         />
       </div>
-      <div class="flex flex-wrap gap-4">
+      <div class="mt-auto flex flex-wrap gap-4">
         <a
           v-for="link in props.links"
           :key="link.url"
