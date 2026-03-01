@@ -37,11 +37,11 @@ const statusColor = computed(() => (props.status ? statusColorMap[props.status] 
       <img
         :src="props.imageUrl"
         :alt="props.title"
-        class="h-48 w-full object-cover transition duration-200 group-hover:scale-105"
+        class="h-38 w-full object-cover transition duration-200 group-hover:scale-105"
         loading="lazy"
       />
     </div>
-    <div class="space-y-4">
+    <div class="mt-2 space-y-4">
       <div>
         <div class="flex flex-wrap items-center gap-3">
           <h3 class="text-star-white text-xl font-semibold">{{ props.title }}</h3>
