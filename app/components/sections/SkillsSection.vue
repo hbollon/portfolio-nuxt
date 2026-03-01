@@ -73,7 +73,7 @@ const categories = computed(() => {
             :key="category.label"
             :delay="150 + index * 100"
           >
-            <Card class="space-y-6">
+            <Card class="flex h-full flex-col space-y-6">
               <div class="space-y-2">
                 <h3 class="text-star-white text-lg font-semibold">
                   {{ category.label }}
