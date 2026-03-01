@@ -37,6 +37,7 @@ const componentProps = computed(() => {
     disabled?: boolean
     ariaDisabled?: boolean
     tabIndex?: number
+    target?: string
   } = {}
 
   if (props.tag === 'button') {
@@ -46,6 +47,7 @@ const componentProps = computed(() => {
 
   if (props.tag === 'a') {
     attrs.href = props.href
+    attrs.target = '_blank'
   }
 
   if (props.tag === 'NuxtLink') {
