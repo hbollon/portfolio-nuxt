@@ -44,6 +44,7 @@ jobs:
         with:
           aws-region: ${{ secrets.AWS_REGION }}
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-session-name: GitHubActions-${{ github.run_id }}
 
       - name: Sync to S3
         run: aws s3 sync --delete .output/public s3://${{ secrets.S3_BUCKET_NAME }}
