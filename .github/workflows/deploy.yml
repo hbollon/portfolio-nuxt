@@ -16,6 +16,7 @@ jobs:
     env:
       STRAPI_URL: ${{ secrets.STRAPI_URL }}
       STRAPI_TOKEN: ${{ secrets.STRAPI_TOKEN }}
+      STRAPI_MEDIA_CDN_URL: ${{ secrets.STRAPI_MEDIA_CDN_URL }}
       GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
       S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
