@@ -29,8 +29,13 @@ export const useStrapi = () => {
     }
   }
 
-  const { strapiUrl, strapiToken } = useRuntimeConfig()
+  const { strapiUrl, strapiToken, public: publicConfig } = useRuntimeConfig()
   const api = createStrapiApi({ baseUrl: strapiUrl, token: strapiToken })
+  const cdnUrl =
+    typeof publicConfig.strapiMediaCdnUrl === 'string'
+      ? publicConfig.strapiMediaCdnUrl.replace(/\/$/, '')
+      : ''
+  const strapiOrigin = strapiUrl.replace(/\/$/, '')
 
   const normalizeLocale = (locale?: string): string | undefined => {
     if (!locale) {
@@ -54,10 +59,28 @@ export const useStrapi = () => {
     }
 
     if (media.url.startsWith('http://') || media.url.startsWith('https://')) {
+      if (!cdnUrl) {
+        return media
+      }
+
+      try {
+        const currentUrl = new URL(media.url)
+        const strapiHost = new URL(strapiOrigin).host
+        const isStrapiHost = currentUrl.host === strapiHost
+        const isCloudHost = currentUrl.host.endsWith('cloudfront.net')
+        const isS3Host = currentUrl.host.endsWith('amazonaws.com')
+
+        if (isStrapiHost || isCloudHost || isS3Host) {
+          return { ...media, url: `${cdnUrl}${currentUrl.pathname}` }
+        }
+      } catch {
+        return media
+      }
+
       return media
     }
 
-    const baseUrl = strapiUrl.replace(/\/$/, '')
+    const baseUrl = cdnUrl ?? strapiOrigin
     const path = media.url.replace(/^\//, '')
     return { ...media, url: `${baseUrl}/${path}` }
   }
