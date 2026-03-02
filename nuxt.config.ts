@@ -29,7 +29,7 @@ export default defineNuxtConfig({
 
   nitro: {
     prerender: {
-      routes: ['/', '/fr/'],
+      routes: ['/', '/fr'],
     },
   },
 
