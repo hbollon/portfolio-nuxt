@@ -29,7 +29,7 @@ export default defineNuxtConfig({
 
   nitro: {
     prerender: {
-      routes: ['/', '/fr'],
+      routes: ['/', '/fr/'],
     },
   },
 
@@ -40,6 +40,7 @@ export default defineNuxtConfig({
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || '',
       googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID || '',
       strapiEnabled: Boolean(process.env.STRAPI_URL && process.env.STRAPI_TOKEN),
+      strapiMediaCdnUrl: process.env.STRAPI_MEDIA_CDN_URL || '',
     },
   },
 

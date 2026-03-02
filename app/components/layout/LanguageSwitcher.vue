@@ -14,10 +14,17 @@ const availableLocales: Array<{ code: LocaleCode; label: string }> = [
 
 // Avoid hydration mismatches by stripping hashes from locale switch links.
 const localeLinks = computed(() =>
-  availableLocales.map((item) => ({
-    ...item,
-    href: (switchLocalePath(item.code) ?? '/').split('#')[0],
-  }))
+  availableLocales.map((item) => {
+    const rawHref = switchLocalePath(item.code) ?? '/'
+    const cleanedHref = rawHref.split('#')[0] ?? '/'
+    const normalized =
+      cleanedHref === '/' || cleanedHref.endsWith('/') ? cleanedHref : `${cleanedHref}/`
+
+    return {
+      ...item,
+      href: normalized,
+    }
+  })
 )
 
 const setLocaleCookie = (code: string) => {
