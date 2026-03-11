@@ -1,20 +1,32 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
-import { gsap } from 'gsap'
 
 const props = withDefaults(
   defineProps<{
     phrases: string[]
-    duration?: number
+    typingSpeed?: number
+    deletingSpeed?: number
+    holdDuration?: number
+    transitionPause?: number
   }>(),
   {
-    duration: 2.4,
+    typingSpeed: 70,
+    deletingSpeed: 45,
+    holdDuration: 1200,
+    transitionPause: 250,
   }
 )
 
 const current = ref('')
 const prefersReducedMotion = ref(false)
-let timeline: gsap.core.Timeline | null = null
+let activeTimer: ReturnType<typeof setTimeout> | undefined
+
+const clearTimer = () => {
+  if (activeTimer) {
+    clearTimeout(activeTimer)
+    activeTimer = undefined
+  }
+}
 
 const cycle = () => {
   if (props.phrases.length === 0) {
@@ -22,18 +34,43 @@ const cycle = () => {
     return
   }
 
-  // Keep the timeline lightweight: switch text, hold, then repeat.
-  timeline?.kill()
-  timeline = gsap.timeline({ repeat: -1 })
+  let phraseIndex = 0
+  let charIndex = 0
+  let isDeleting = false
 
-  for (const phrase of props.phrases) {
-    timeline
-      .to({}, { duration: 0.2 })
-      .call(() => {
-        current.value = phrase
-      })
-      .to({}, { duration: props.duration })
+  const tick = () => {
+    const phrase = props.phrases[phraseIndex] ?? ''
+
+    if (!isDeleting) {
+      charIndex += 1
+      current.value = phrase.slice(0, charIndex)
+
+      if (charIndex >= phrase.length) {
+        isDeleting = true
+        activeTimer = setTimeout(tick, props.holdDuration)
+        return
+      }
+
+      activeTimer = setTimeout(tick, props.typingSpeed)
+      return
+    }
+
+    charIndex -= 1
+    current.value = phrase.slice(0, Math.max(charIndex, 0))
+
+    if (charIndex <= 0) {
+      isDeleting = false
+      phraseIndex = (phraseIndex + 1) % props.phrases.length
+      activeTimer = setTimeout(tick, props.transitionPause)
+      return
+    }
+
+    activeTimer = setTimeout(tick, props.deletingSpeed)
   }
+
+  clearTimer()
+  current.value = ''
+  tick()
 }
 
 onMounted(() => {
@@ -58,20 +95,19 @@ watch(
       return
     }
 
-    // Rebuild the timeline when phrases change to avoid stale text.
     cycle()
-  }
+  },
+  { deep: true }
 )
 
 onUnmounted(() => {
-  // Ensure GSAP timelines are released on unmount.
-  timeline?.kill()
-  timeline = null
+  clearTimer()
 })
 </script>
 
 <template>
   <span class="inline-flex min-h-[1em] items-center">
-    {{ current }}
+    <span>{{ current }}</span
+    ><span aria-hidden="true" class="animate-terminal-cursor inline-block leading-none">_</span>
   </span>
 </template>

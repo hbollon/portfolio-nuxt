@@ -25,6 +25,7 @@
   --animate-float: float 6s ease-in-out infinite;
   --animate-glow-pulse: glow-pulse 2s ease-in-out infinite;
   --animate-slide-in-right: slide-in-right 0.3s ease-out;
+  --animate-terminal-cursor: terminal-cursor 1s step-end infinite;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 

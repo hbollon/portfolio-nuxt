@@ -55,6 +55,7 @@ const orbStyle = computed(() => {
           </Button>
         </div>
         <div class="text-star-gray flex items-center gap-1 text-sm">
+          <span>{{ t('hero.typedPrefix') }}</span>
           <TypedText :phrases="phrases" />
           <span>{{ t('hero.typedSuffix') }}</span>
         </div>
