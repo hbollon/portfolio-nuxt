@@ -17,7 +17,8 @@
     "description": "I design, automate, and operate cloud-native systems with a focus on reliability, security, and developer experience.",
     "ctaPrimary": "View projects",
     "ctaSecondary": "Get in touch",
-    "typedPhrases": ["I build", "I deploy", "I automate"],
+    "typedPrefix": "I",
+    "typedPhrases": ["build", "deploy", "automate"],
     "typedSuffix": "for modern teams",
     "scrollHint": "Scroll"
   },
@@ -82,6 +83,15 @@
       "completed": "Completed",
       "in_progress": "In progress",
       "archived": "Archived"
+    },
+    "metrics": {
+      "stars": "Stars",
+      "forks": "Forks",
+      "issues": "Issues",
+      "pullRequests": "PRs",
+      "loading": "Loading repository metrics...",
+      "unavailable": "Repository metrics unavailable",
+      "noRepository": "No GitHub repository linked"
     },
     "links": {
       "caseStudy": "Case study",

@@ -17,7 +17,8 @@
     "description": "Je conçois, automatise et opère des systèmes cloud-native avec un focus sur la fiabilité, la sécurité et l’expérience développeur.",
     "ctaPrimary": "Voir les projets",
     "ctaSecondary": "Me contacter",
-    "typedPhrases": ["Je conçois", "Je déploie", "J'automatise"],
+    "typedPrefix": "Je",
+    "typedPhrases": ["conçois", "déploie", "automatise"],
     "typedSuffix": "pour des équipes modernes",
     "scrollHint": "Découvrir"
   },
@@ -82,6 +83,15 @@
       "completed": "Terminé",
       "in_progress": "En cours",
       "archived": "Archivé"
+    },
+    "metrics": {
+      "stars": "Stars",
+      "forks": "Forks",
+      "issues": "Issues",
+      "pullRequests": "PRs",
+      "loading": "Chargement des métriques du repository...",
+      "unavailable": "Métriques du repository indisponibles",
+      "noRepository": "Aucun repository GitHub associé"
     },
     "links": {
       "caseStudy": "Étude de cas",
