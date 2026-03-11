@@ -70,7 +70,7 @@ const availabilityLabel = computed(() =>
             <h3 class="text-star-white text-lg font-semibold">
               {{ t('contact.cta') }}
             </h3>
-            <div class="grid gap-3 sm:grid-cols-2">
+            <div class="flex flex-wrap items-center gap-3">
               <SocialLink
                 v-for="link in contactLinks"
                 :key="link.href"
