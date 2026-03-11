@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Project } from '../../../shared/types/strapi'
-import { getStrapiMedia } from '../../utils/strapi'
 
 const props = defineProps<{
   projects: Project[]
@@ -13,7 +12,6 @@ const projectCards = computed(() =>
   props.projects.map((project) => ({
     title: project.title,
     description: project.shortDescription,
-    imageUrl: getStrapiMedia(project.thumbnail),
     technologies: project.technologies ?? [],
     links: project.links ?? [],
     status: project.projectStatus ?? undefined,
