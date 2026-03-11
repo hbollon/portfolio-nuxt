@@ -155,6 +155,7 @@ Supporting content components:
 - Accessibility audit (ARIA labels, focus management, contrast).
 - Responsive fine-tuning on all breakpoints.
 - Animation performance verification (60 FPS).
+- Add custom favicon
 
 **Exit criteria**: Lighthouse scores meet targets. No accessibility violations. Responsive layout verified on mobile, tablet, desktop.
 
