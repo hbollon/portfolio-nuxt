@@ -50,7 +50,7 @@ const orbStyle = computed(() => {
           <Button tag="a" :href="homepage.heroCtaLink" size="lg">
             {{ homepage.heroCtaText }}
           </Button>
-          <Button tag="a" href="#contact" variant="secondary" size="lg">
+          <Button tag="a" href="#projects" variant="secondary" size="lg">
             {{ t('hero.ctaSecondary') }}
           </Button>
         </div>
