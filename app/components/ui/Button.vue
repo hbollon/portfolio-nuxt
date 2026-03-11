@@ -13,6 +13,7 @@ const props = withDefaults(
     tag?: ButtonTag
     href?: string
     to?: RouteLocationRaw
+    external?: boolean
     type?: 'button' | 'submit' | 'reset'
     disabled?: boolean
   }>(),
@@ -22,6 +23,7 @@ const props = withDefaults(
     tag: 'button',
     href: undefined,
     to: undefined,
+    external: undefined,
     type: 'button',
     disabled: false,
   }
@@ -38,6 +40,7 @@ const componentProps = computed(() => {
     ariaDisabled?: boolean
     tabIndex?: number
     target?: string
+    rel?: string
   } = {}
 
   if (props.tag === 'button') {
@@ -46,8 +49,16 @@ const componentProps = computed(() => {
   }
 
   if (props.tag === 'a') {
-    attrs.href = props.href
-    attrs.target = '_blank'
+    const href = props.href ?? ''
+    const inferredExternal = /^(https?:)?\/\//.test(href)
+    const shouldOpenInNewTab = props.external ?? inferredExternal
+
+    attrs.href = href
+
+    if (shouldOpenInNewTab) {
+      attrs.target = '_blank'
+      attrs.rel = 'noopener noreferrer'
+    }
   }
 
   if (props.tag === 'NuxtLink') {
