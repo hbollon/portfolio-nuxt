@@ -27,6 +27,14 @@ const socialIconMap: Record<SocialPlatform, string> = {
   email: 'mdi:email',
   website: 'mdi:web',
 }
+
+const primarySocialIcon = computed(() => {
+  if (!primarySocial.value) {
+    return 'mdi:link-variant'
+  }
+
+  return socialIconMap[primarySocial.value.platform]
+})
 </script>
 
 <template>
@@ -58,9 +66,17 @@ const socialIconMap: Record<SocialPlatform, string> = {
           <ScrollReveal :delay="350">
             <div class="flex flex-wrap gap-4">
               <Button v-if="resumeUrl" tag="a" :href="resumeUrl" variant="secondary">
+                <Icon name="mdi:file-document-outline" class="h-5 w-5" />
                 {{ t('about.resume') }}
               </Button>
-              <Button v-if="primarySocial" tag="a" :href="primarySocial.url" variant="ghost">
+              <Button
+                v-if="primarySocial"
+                tag="a"
+                :href="primarySocial.url"
+                variant="primary"
+                class="shadow-glow-purple"
+              >
+                <Icon :name="primarySocialIcon" class="h-5 w-5" />
                 {{ githubLink ? t('about.github') : primarySocial.label }}
               </Button>
             </div>
@@ -69,13 +85,13 @@ const socialIconMap: Record<SocialPlatform, string> = {
         <ScrollReveal :delay="150">
           <Card class="flex h-full flex-col justify-between">
             <div class="space-y-4">
-              <span class="text-star-gray mb-2 inline-block text-sm tracking-[0.25em] uppercase">
+              <span class="text-star-gray mb-5 inline-block text-sm tracking-[0.25em] uppercase">
                 {{ t('about.profileLabel') }}
               </span>
-              <div class="flex items-start gap-5">
+              <div class="flex flex-col gap-5 lg:flex-row lg:items-start">
                 <div
                   v-if="profileImage"
-                  class="border-star-gray/20 h-24 w-24 shrink-0 overflow-hidden rounded-full border md:h-28 md:w-28"
+                  class="border-star-gray/20 mx-auto h-36 w-36 shrink-0 overflow-hidden rounded-full border lg:mx-0"
                 >
                   <img
                     :src="profileImage"
@@ -85,7 +101,7 @@ const socialIconMap: Record<SocialPlatform, string> = {
                 </div>
                 <!-- eslint-disable vue/no-v-html -->
                 <div
-                  class="markdown text-star-gray min-w-0 flex-1 text-sm leading-relaxed"
+                  class="markdown text-star-gray w-full min-w-0 flex-1 text-sm leading-relaxed"
                   v-html="bioHtml"
                 />
                 <!-- eslint-enable vue/no-v-html -->
