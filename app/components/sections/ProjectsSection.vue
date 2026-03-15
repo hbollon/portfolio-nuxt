@@ -34,7 +34,7 @@ const projectCards = computed(() =>
           </div>
         </ScrollReveal>
 
-        <div class="grid gap-8 lg:grid-cols-2">
+        <div class="grid gap-8 md:grid-cols-2">
           <ScrollReveal
             v-for="(project, index) in projectCards"
             :key="project.title"

@@ -49,7 +49,7 @@ onMounted(() => {
   <component
     :is="props.as"
     ref="elementRef"
-    class="transition duration-[600ms] ease-out"
+    class="transition-[transform,opacity] duration-[600ms] ease-out"
     :style="{ transitionDelay: `${props.delay}ms` }"
     :class="isVisible ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'"
   >
