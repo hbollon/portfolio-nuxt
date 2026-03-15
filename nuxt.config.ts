@@ -43,6 +43,7 @@ export default defineNuxtConfig({
       googleSiteVerification: process.env.NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
       strapiEnabled: Boolean(process.env.STRAPI_URL && process.env.STRAPI_TOKEN),
       strapiMediaCdnUrl: process.env.STRAPI_MEDIA_CDN_URL || '',
+      githubToken: process.env.NUXT_PUBLIC_GITHUB_TOKEN || '',
     },
   },
 

@@ -22,14 +22,29 @@ const inflight = new Map<string, Promise<GithubRepoStats | null>>()
 
 const REPO_URL_REGEX = /^https?:\/\/github\.com\/([^/]+)\/([^/?#]+)/i
 
+const buildHeaders = (): Record<string, string> => {
+  const headers: Record<string, string> = {
+    Accept: 'application/vnd.github+json',
+  }
+
+  // useRuntimeConfig is only available in the Nuxt context (client-side here).
+  try {
+    const config = useRuntimeConfig()
+    const token = config.public.githubToken as string
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+  } catch {
+    // Outside Nuxt context (e.g. unit tests) — skip token injection.
+  }
+
+  return headers
+}
+
 const getPullRequestsCount = async (repoPath: string): Promise<number> => {
   const response = await fetch(
     `https://api.github.com/repos/${repoPath}/pulls?state=open&per_page=1`,
-    {
-      headers: {
-        Accept: 'application/vnd.github+json',
-      },
-    }
+    { headers: buildHeaders() }
   )
 
   if (!response.ok) {
@@ -81,11 +96,7 @@ export const fetchGithubRepoStats = async (repoPath: string): Promise<GithubRepo
   const request = (async () => {
     try {
       const [repoResponse, pullRequests] = await Promise.all([
-        fetch(`https://api.github.com/repos/${repoPath}`, {
-          headers: {
-            Accept: 'application/vnd.github+json',
-          },
-        }),
+        fetch(`https://api.github.com/repos/${repoPath}`, { headers: buildHeaders() }),
         getPullRequestsCount(repoPath),
       ])
 
