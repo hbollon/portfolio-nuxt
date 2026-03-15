@@ -29,6 +29,8 @@ const { t } = useI18n()
             :alt="props.company"
             class="h-8 w-8 rounded-full object-contain"
             loading="lazy"
+            width="32"
+            height="32"
           />
         </div>
         <div>

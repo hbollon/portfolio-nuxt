@@ -11,6 +11,9 @@ const props = defineProps<{
 const { t } = useI18n()
 
 const profileImage = computed(() => getStrapiMedia(props.about.profilePicture))
+const profileAlt = computed(
+  () => props.about.profilePicture?.alternativeText || `Profile photo of ${props.about.title}`
+)
 const resumeUrl = computed(() => getStrapiMedia(props.about.resume))
 const bioHtml = computed(() => renderMarkdown(props.about.bio))
 
@@ -66,7 +69,7 @@ const primarySocialIcon = computed(() => {
           <ScrollReveal :delay="350">
             <div class="flex flex-wrap gap-4">
               <Button v-if="resumeUrl" tag="a" :href="resumeUrl" variant="secondary">
-                <Icon name="mdi:file-document-outline" class="h-5 w-5" />
+                <Icon name="mdi:file-document-outline" class="h-5 w-5" aria-hidden="true" />
                 {{ t('about.resume') }}
               </Button>
               <Button
@@ -76,7 +79,7 @@ const primarySocialIcon = computed(() => {
                 variant="primary"
                 class="shadow-glow-purple"
               >
-                <Icon :name="primarySocialIcon" class="h-5 w-5" />
+                <Icon :name="primarySocialIcon" class="h-5 w-5" aria-hidden="true" />
                 {{ githubLink ? t('about.github') : primarySocial.label }}
               </Button>
             </div>
@@ -95,8 +98,11 @@ const primarySocialIcon = computed(() => {
                 >
                   <img
                     :src="profileImage"
-                    :alt="props.about.title"
+                    :alt="profileAlt"
                     class="h-full w-full object-cover"
+                    loading="lazy"
+                    width="144"
+                    height="144"
                   />
                 </div>
                 <!-- eslint-disable vue/no-v-html -->
