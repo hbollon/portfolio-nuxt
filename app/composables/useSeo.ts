@@ -23,25 +23,33 @@ export const useSeo = (seo?: SharedSeo | null) => {
     : `${siteUrl.replace(/\/$/, '')}/og-image.jpg`
   const canonical = `${siteUrl.replace(/\/$/, '')}${route.path}`
 
+  const googleSiteVerification = runtimeConfig.public.googleSiteVerification as string
+
+  const meta: Record<string, string>[] = [
+    { name: 'description', content: metaDescription },
+    { property: 'og:title', content: metaTitle },
+    { property: 'og:description', content: metaDescription },
+    { property: 'og:image', content: ogImage },
+    { property: 'og:url', content: canonical },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:locale', content: localeToOg(locale.value) },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: metaTitle },
+    { name: 'twitter:description', content: metaDescription },
+    { name: 'twitter:image', content: ogImage },
+  ]
+
+  if (googleSiteVerification) {
+    meta.push({ name: 'google-site-verification', content: googleSiteVerification })
+  }
+
   // Centralize all meta tags so every page can share the same SEO rules.
   useHead({
     title: metaTitle,
     htmlAttrs: {
       lang: locale.value,
     },
-    meta: [
-      { name: 'description', content: metaDescription },
-      { property: 'og:title', content: metaTitle },
-      { property: 'og:description', content: metaDescription },
-      { property: 'og:image', content: ogImage },
-      { property: 'og:url', content: canonical },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:locale', content: localeToOg(locale.value) },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: metaTitle },
-      { name: 'twitter:description', content: metaDescription },
-      { name: 'twitter:image', content: ogImage },
-    ],
+    meta,
     link: [{ rel: 'canonical', href: canonical }],
   })
 }

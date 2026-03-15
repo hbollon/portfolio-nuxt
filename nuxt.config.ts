@@ -38,7 +38,9 @@ export default defineNuxtConfig({
     strapiToken: process.env.STRAPI_TOKEN || '',
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || '',
-      googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID || '',
+      umamiWebsiteId: process.env.UMAMI_WEBSITE_ID || '',
+      umamiScriptUrl: process.env.UMAMI_SCRIPT_URL || 'https://cloud.umami.is/script.js',
+      googleSiteVerification: process.env.NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
       strapiEnabled: Boolean(process.env.STRAPI_URL && process.env.STRAPI_TOKEN),
       strapiMediaCdnUrl: process.env.STRAPI_MEDIA_CDN_URL || '',
     },
@@ -52,8 +54,10 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'theme-color', content: '#0a0a0f' },
       ],
       link: [
+        { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
