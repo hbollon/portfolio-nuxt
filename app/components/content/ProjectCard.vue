@@ -131,9 +131,9 @@ watch(githubRepoPath, () => {
           :key="stat.label"
           class="border-star-gray/10 bg-space-black/30 flex items-center gap-2 rounded-lg border px-3 py-2"
         >
-          <Icon :name="stat.icon" class="text-cosmic-cyan h-4 w-4" />
+          <Icon :name="stat.icon" class="text-cosmic-cyan h-4 w-4" aria-hidden="true" />
           <div>
-            <div class="text-star-gray text-[10px] tracking-wide uppercase">{{ stat.label }}</div>
+            <div class="text-star-gray text-xs tracking-wide uppercase">{{ stat.label }}</div>
             <div class="text-star-white text-sm font-semibold">{{ stat.displayValue }}</div>
           </div>
         </div>
@@ -173,7 +173,11 @@ watch(githubRepoPath, () => {
           rel="noopener noreferrer"
           target="_blank"
         >
-          <Icon :name="link.type ? linkIconMap[link.type] : 'mdi:link-variant'" class="h-4 w-4" />
+          <Icon
+            :name="link.type ? linkIconMap[link.type] : 'mdi:link-variant'"
+            class="h-4 w-4"
+            aria-hidden="true"
+          />
           {{ link.label }}
         </a>
       </div>

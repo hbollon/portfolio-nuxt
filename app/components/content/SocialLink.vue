@@ -29,7 +29,7 @@ const targetValue = props.external ? '_blank' : undefined
     <span
       class="border-star-gray/20 bg-space-void/80 flex h-8 w-8 items-center justify-center rounded-full border transition"
     >
-      <Icon :name="props.icon" class="h-4 w-4" />
+      <Icon :name="props.icon" class="h-4 w-4" aria-hidden="true" />
     </span>
     <span v-if="props.showLabel" class="text-sm leading-snug font-medium">
       {{ props.label }}

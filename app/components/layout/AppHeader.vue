@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 
 type NavItem = {
   id: string
@@ -24,6 +24,8 @@ const sectionIds = computed(() => navItems.value.map((item) => item.id))
 const isScrolled = ref(false)
 const activeSection = ref('hero')
 const isMenuOpen = ref(false)
+const menuToggleRef = ref<HTMLButtonElement | null>(null)
+const mobileMenuRef = ref<HTMLElement | null>(null)
 
 const updateScrollState = () => {
   isScrolled.value = window.scrollY > 50
@@ -106,53 +108,85 @@ const toggleMenu = () => {
 const closeMenu = () => {
   isMenuOpen.value = false
 }
+
+// Move focus into the mobile menu on open, back to the toggle on close.
+watch(isMenuOpen, async (open) => {
+  await nextTick()
+  if (open) {
+    const firstLink = mobileMenuRef.value?.querySelector('a') as HTMLElement | null
+    firstLink?.focus()
+  } else {
+    menuToggleRef.value?.focus()
+  }
+})
+
+// Close the mobile menu when the user presses Escape.
+const onKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Escape' && isMenuOpen.value) {
+    closeMenu()
+  }
+}
 </script>
 
 <template>
-  <header
-    class="fixed top-0 left-0 z-50 w-full transition-all duration-300"
-    :class="isScrolled ? 'bg-space-void/70 shadow-glow-subtle backdrop-blur-lg' : 'bg-transparent'"
-  >
-    <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center gap-3 text-lg font-semibold tracking-tight">
-        <span class="text-gradient">Hugo Bollon</span>
-        <span class="text-star-gray text-xs">DevOps Engineer</span>
-      </div>
+  <header class="fixed top-0 left-0 z-50 w-full" @keydown="onKeydown">
+    <div
+      class="h-16 w-full transition-[background-color,box-shadow,backdrop-filter] duration-300"
+      :class="
+        isScrolled ? 'bg-space-void/70 shadow-glow-subtle backdrop-blur-lg' : 'bg-transparent'
+      "
+    >
+      <div class="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-3 text-lg font-semibold tracking-tight">
+          <span class="text-gradient">Hugo Bollon</span>
+          <span class="text-star-gray text-xs">DevOps Engineer</span>
+        </div>
 
-      <nav class="hidden items-center gap-6 text-sm lg:flex">
-        <a
-          v-for="item in navItems"
-          :key="item.id"
-          :href="`#${item.id}`"
-          class="text-star-gray hover:text-star-white relative transition"
-          :class="activeSection === item.id ? 'text-star-white' : ''"
+        <nav class="hidden items-center gap-6 text-sm lg:flex" aria-label="Main navigation">
+          <a
+            v-for="item in navItems"
+            :key="item.id"
+            :href="`#${item.id}`"
+            class="text-star-gray hover:text-star-white relative transition"
+            :class="activeSection === item.id ? 'text-star-white' : ''"
+          >
+            {{ item.label }}
+            <span
+              class="bg-gradient-nebula absolute -bottom-2 left-0 h-[2px] w-full rounded-full transition-opacity"
+              :class="activeSection === item.id ? 'opacity-100' : 'opacity-0'"
+            />
+          </a>
+        </nav>
+
+        <div class="hidden lg:flex">
+          <LanguageSwitcher />
+        </div>
+
+        <button
+          ref="menuToggleRef"
+          class="border-star-gray/20 text-star-white flex h-10 w-10 items-center justify-center rounded-full border lg:hidden"
+          type="button"
+          :aria-expanded="isMenuOpen"
+          aria-controls="mobile-menu"
+          aria-label="Toggle navigation menu"
+          @click="toggleMenu"
         >
-          {{ item.label }}
-          <span
-            class="bg-gradient-nebula absolute -bottom-2 left-0 h-[2px] w-full rounded-full transition-opacity"
-            :class="activeSection === item.id ? 'opacity-100' : 'opacity-0'"
-          />
-        </a>
-      </nav>
-
-      <div class="hidden lg:flex">
-        <LanguageSwitcher />
+          <Icon :name="isMenuOpen ? 'mdi:close' : 'mdi:menu'" class="h-5 w-5" aria-hidden="true" />
+        </button>
       </div>
-
-      <button
-        class="border-star-gray/20 text-star-white flex h-10 w-10 items-center justify-center rounded-full border lg:hidden"
-        type="button"
-        :aria-expanded="isMenuOpen"
-        aria-label="Toggle navigation menu"
-        @click="toggleMenu"
-      >
-        <Icon :name="isMenuOpen ? 'mdi:close' : 'mdi:menu'" class="h-5 w-5" />
-      </button>
     </div>
 
-    <div
-      class="lg:hidden"
-      :class="isMenuOpen ? 'max-h-[520px] opacity-100' : 'pointer-events-none max-h-0 opacity-0'"
+    <nav
+      id="mobile-menu"
+      ref="mobileMenuRef"
+      class="overflow-hidden transition-[opacity,transform] duration-300 ease-out lg:hidden"
+      :class="
+        isMenuOpen
+          ? 'pointer-events-auto scale-y-100 opacity-100'
+          : 'pointer-events-none scale-y-0 opacity-0'
+      "
+      style="transform-origin: top"
+      aria-label="Mobile navigation"
     >
       <div class="border-star-gray/10 bg-space-void/90 border-t px-4 py-6 backdrop-blur-lg">
         <div class="flex flex-col gap-4">
@@ -161,6 +195,7 @@ const closeMenu = () => {
             :key="item.id"
             :href="`#${item.id}`"
             class="text-star-gray hover:text-star-white text-base transition"
+            :tabindex="isMenuOpen ? 0 : -1"
             @click="closeMenu"
           >
             {{ item.label }}
@@ -170,6 +205,6 @@ const closeMenu = () => {
           <LanguageSwitcher />
         </div>
       </div>
-    </div>
+    </nav>
   </header>
 </template>

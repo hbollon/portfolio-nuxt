@@ -21,7 +21,7 @@ const props = withDefaults(
       boxShadow: `0 0 12px ${props.color}33`,
     }"
   >
-    <Icon v-if="props.icon" :name="props.icon" class="h-4 w-4" />
+    <Icon v-if="props.icon" :name="props.icon" class="h-4 w-4" aria-hidden="true" />
     <span>{{ props.label }}</span>
   </span>
 </template>
