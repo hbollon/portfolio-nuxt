@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 import type { Homepage } from '../../../shared/types/strapi'
 
 defineProps<{
@@ -24,11 +24,31 @@ const orbStyle = computed(() => {
 
   return { transform: `translate3d(0, ${y.value * 0.15}px, 0)` }
 })
+
+// Defer particle loading until the browser is idle to avoid blocking FCP/LCP.
+const shouldRenderParticles = ref(false)
+const AsyncParticles = defineAsyncComponent(() => import('../animations/ParticlesBackground.vue'))
+
+onMounted(() => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return
+  }
+
+  const load = () => {
+    shouldRenderParticles.value = true
+  }
+
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(load)
+  } else {
+    setTimeout(load, 600)
+  }
+})
 </script>
 
 <template>
-  <Section id="hero" class="relative overflow-hidden">
-    <ParticlesBackground />
+  <Section id="hero" class="relative flex min-h-[calc(100vh-4rem)] items-center overflow-hidden">
+    <AsyncParticles v-if="shouldRenderParticles" />
     <div
       class="bg-gradient-aurora pointer-events-none absolute top-16 right-10 h-40 w-40 rounded-full opacity-40 blur-3xl"
       :style="orbStyle"
@@ -63,7 +83,7 @@ const orbStyle = computed(() => {
           href="#about"
           class="text-star-gray hover:text-star-white mt-8 inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase transition"
         >
-          <Icon name="mdi:chevron-down" class="animate-float h-5 w-5" />
+          <Icon name="mdi:chevron-down" class="animate-float h-5 w-5" aria-hidden="true" />
           {{ t('hero.scrollHint') }}
         </a>
       </div>

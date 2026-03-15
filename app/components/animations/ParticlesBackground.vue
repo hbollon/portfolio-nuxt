@@ -3,7 +3,18 @@ import { nextTick, onMounted, onUnmounted } from 'vue'
 import { tsParticles } from '@tsparticles/engine'
 
 const prefersReducedMotion = ref(false)
+const isCompactViewport = ref(false)
+const isLowEndDevice = ref(false)
 let animationFrameId = 0
+
+const detectDevice = () => {
+  isCompactViewport.value = window.innerWidth < 768
+  const nav = navigator as { deviceMemory?: number }
+  isLowEndDevice.value =
+    (nav.deviceMemory !== undefined && nav.deviceMemory <= 4) || navigator.hardwareConcurrency <= 4
+}
+
+const particleCount = computed(() => (isCompactViewport.value || isLowEndDevice.value ? 50 : 90))
 
 const options = computed(() => ({
   fullScreen: {
@@ -16,8 +27,7 @@ const options = computed(() => ({
   },
   particles: {
     number: {
-      // Particle count stays constant; reduced motion disables animations only.
-      value: 90,
+      value: particleCount.value,
       density: { enable: true, width: 1200, height: 800 },
     },
     color: { value: ['#f8fafc', '#a855f7', '#3b82f6', '#06b6d4'] },
@@ -61,6 +71,9 @@ onMounted(() => {
     return
   }
 
+  detectDevice()
+  window.addEventListener('resize', detectDevice, { passive: true })
+
   // Respect user motion preferences (animations disabled but particles remain visible).
   prefersReducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   animationFrameId = window.requestAnimationFrame(async () => {
@@ -73,6 +86,7 @@ onUnmounted(() => {
   if (animationFrameId) {
     window.cancelAnimationFrame(animationFrameId)
   }
+  window.removeEventListener('resize', detectDevice)
   void tsParticles.domItem(0)?.destroy()
 })
 </script>
