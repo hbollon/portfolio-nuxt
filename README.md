@@ -1,19 +1,46 @@
-# portfolio-nuxt
+<div align="center">
 
-My personal portfolio — a statically generated single-page site built with Nuxt 4. Space/cosmos dark theme, full EN/FR support, and a Strapi v5 CMS backend for content management.
+# 💼 Portfolio — Nuxt 4 & Strapi CMS
 
-Live at [hugobollon.dev](https://hugobollon.dev).
+<img src=".github/portfolio-showcase.gif" alt="Portfolio showcase" width="700" />
 
-## Stack
+<br/>
 
-- **Nuxt 4** — SSG via `nuxt generate`, deployed to S3 + CloudFront
-- **Tailwind CSS v4** — design tokens, glassmorphism, custom animations
-- **Strapi v5** — headless CMS, consumed at build time only
-- **@nuxtjs/i18n** — EN (default) / FR with `/fr/` prefix
-- **tsparticles** — particle background, adaptive to device capability
-- **GitHub Actions** — CI/CD with AWS OIDC (no static credentials)
+**A statically generated personal portfolio built with Nuxt 4 — space/cosmos dark theme, EN/FR, Strapi CMS.**
 
-## Content management
+[![Live](https://img.shields.io/badge/Live-hugobollon.dev-6366f1?logo=googlechrome&logoColor=white)](https://hugobollon.dev)
+[![Build](https://github.com/hbollon/portfolio-nuxt/actions/workflows/deploy.yml/badge.svg)](https://github.com/hbollon/portfolio-nuxt/actions/workflows/deploy.yml)
+[![CodeFactor](https://www.codefactor.io/repository/github/hbollon/portfolio-nuxt/badge)](https://www.codefactor.io/repository/github/hbollon/portfolio-nuxt)
+[![License](https://img.shields.io/badge/License-MIT-22c55e)](LICENSE)
+
+</div>
+
+---
+
+## Table of contents
+
+- [🧰 Stack](#-stack)
+- [📋 Content management](#-content-management)
+- [📦 Prerequisites](#-prerequisites)
+- [🚀 Getting started](#-getting-started)
+- [🔧 Environment variables](#-environment-variables)
+- [🚢 Deployment](#-deployment)
+- [☁️ Infrastructure](#️-infrastructure)
+
+---
+
+## 🧰 Stack
+
+|     | Technology          | Role                                                 |
+| --- | ------------------- | ---------------------------------------------------- |
+| ⚡  | **Nuxt 4**          | SSG via `nuxt generate`, deployed to S3 + CloudFront |
+| 🎨  | **Tailwind CSS v4** | Design tokens, glassmorphism, custom animations      |
+| 📦  | **Strapi v5**       | Headless CMS, consumed at build time only            |
+| 🌍  | **@nuxtjs/i18n**    | EN (default) / FR with `/fr/` prefix                 |
+| ✨  | **tsparticles**     | Particle background, adaptive to device capability   |
+| 🔁  | **GitHub Actions**  | CI/CD with AWS OIDC (no static credentials)          |
+
+## 📋 Content management
 
 ### With Strapi (recommended)
 
@@ -23,14 +50,14 @@ The expected Strapi content types are documented in [`specs/strapi-data-model.md
 
 ### Without Strapi (local fallback)
 
-If `STRAPI_URL` or `STRAPI_TOKEN` are not set, the site builds with static fallback content defined in `locales/content/en.ts` and `locales/content/fr.ts`. This is useful for local development without a running Strapi instance, but the content is placeholder data — not production-ready.
+If `STRAPI_URL` or `STRAPI_TOKEN` are not set, the site builds with static fallback content defined in `locales/content/en.ts` and `locales/content/fr.ts`. Useful for local development without a running Strapi instance, but the content is placeholder data — not production-ready.
 
-## Prerequisites
+## 📦 Prerequisites
 
 - Node.js 24+
 - Yarn Berry v4 (`corepack enable`)
 
-## Getting started
+## 🚀 Getting started
 
 ```bash
 cp .env.example .env.local
@@ -41,7 +68,7 @@ yarn dev        # development server on http://localhost:3000
 yarn generate   # static site build → .output/public/
 ```
 
-## Environment variables
+## 🔧 Environment variables
 
 Copy `.env.example` and fill in the relevant values.
 
@@ -62,16 +89,17 @@ Copy `.env.example` and fill in the relevant values.
 
 \*Without `STRAPI_URL` + `STRAPI_TOKEN`, the build falls back to local content.
 
-> **Warning — `NUXT_PUBLIC_GITHUB_TOKEN` is exposed in the client bundle.**
+> [!WARNING]
+> **`NUXT_PUBLIC_GITHUB_TOKEN` is exposed in the client bundle.**
 > Any variable prefixed with `NUXT_PUBLIC_` is embedded in the generated JavaScript and visible to anyone who inspects the source. Use a fine-grained PAT scoped to **read-only public repositories** with no other permissions. Never use a token with write access or access to private repositories.
 
-## Deployment
+## 🚢 Deployment
 
 The site deploys automatically on push to `main` via GitHub Actions (see [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)). The workflow uses AWS OIDC authentication — no static AWS credentials are stored as secrets.
 
 Required GitHub Actions secrets: `STRAPI_URL`, `STRAPI_TOKEN`, `STRAPI_MEDIA_CDN_URL`, `NUXT_PUBLIC_SITE_URL`, `NUXT_PUBLIC_GITHUB_TOKEN`, `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION`, `UMAMI_WEBSITE_ID`, `UMAMI_SCRIPT_URL`, `AWS_ROLE_ARN`, `AWS_REGION`, `S3_BUCKET_NAME`, `CLOUDFRONT_DISTRIBUTION_ID`.
 
-## Infrastructure
+## ☁️ Infrastructure
 
 The production infrastructure is managed with Terraform and hosted on AWS.
 
@@ -118,6 +146,26 @@ Strapi v5 runs on an ARM EC2 instance (`t4g.micro`) behind a Caddy reverse proxy
 
 The Strapi API is consumed **only at build time**. The deployed static site makes no runtime calls to the backend.
 
-## License
+## 👤 Author
 
-MIT
+<div align="center">
+
+**Hugo Bollon** — DevOps Engineer · Grenoble, France
+
+[![GitHub](https://img.shields.io/badge/GitHub-hbollon-181717?style=flat-square&logo=github)](https://github.com/hbollon)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-hugobollon-0A66C2?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/hugobollon/)
+[![Portfolio](https://img.shields.io/badge/Portfolio-hugobollon.dev-6366f1?style=flat-square&logo=googlechrome&logoColor=white)](https://hugobollon.dev)
+
+</div>
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome. Feel free to check the [issues page](https://github.com/hbollon/portfolio-nuxt/issues).
+
+## ⭐ Show your support
+
+Give a star if this project helped you!
+
+## 📝 License
+
+This project is under the [MIT](https://github.com/hbollon/portfolio-nuxt/blob/main/LICENSE) license.
