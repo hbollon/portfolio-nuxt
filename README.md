@@ -71,6 +71,53 @@ The site deploys automatically on push to `main` via GitHub Actions (see [`.gith
 
 Required GitHub Actions secrets: `STRAPI_URL`, `STRAPI_TOKEN`, `STRAPI_MEDIA_CDN_URL`, `NUXT_PUBLIC_SITE_URL`, `NUXT_PUBLIC_GITHUB_TOKEN`, `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION`, `UMAMI_WEBSITE_ID`, `UMAMI_SCRIPT_URL`, `AWS_ROLE_ARN`, `AWS_REGION`, `S3_BUCKET_NAME`, `CLOUDFRONT_DISTRIBUTION_ID`.
 
+## Infrastructure
+
+The production infrastructure is managed with Terraform and hosted on AWS.
+
+```mermaid
+flowchart LR
+    subgraph Build ["CI (GitHub Actions)"]
+        GHA["github-actions-portfolio-deploy\n(OIDC role)"]
+    end
+
+    subgraph Hosting ["Portfolio hosting"]
+        S3["S3 bucket\n(private)"]
+        CF["CloudFront\n(OAC, PriceClass_100)"]
+        CFF["CloudFront Function\npretty URLs"]
+    end
+
+    subgraph CMS ["Strapi API — api.hugobollon.dev"]
+        EC2["EC2 t4g.micro\nCaddy + Docker Compose"]
+        PG["PostgreSQL\n(EBS gp3 20GB)"]
+        STRAPI_S3["S3 media bucket\n(private)"]
+        STRAPI_CF["CloudFront\n(OAC, media CDN)"]
+    end
+
+    DNS["Route53\nhugobollon.dev"]
+    USER["Browser"]
+
+    GHA -->|"sync + invalidate"| S3
+    S3 --> CF
+    CFF --> CF
+    CF --> DNS
+    DNS --> USER
+
+    EC2 --> PG
+    EC2 -->|"media uploads"| STRAPI_S3
+    STRAPI_S3 --> STRAPI_CF
+```
+
+### Portfolio hosting
+
+Static output from `yarn generate` is synced to a private S3 bucket and served through CloudFront with Origin Access Control (SigV4). A CloudFront Function rewrites clean URL paths to their `index.html` equivalents. Deployment uses an OIDC-authenticated IAM role — no static AWS credentials.
+
+### Strapi API
+
+Strapi v5 runs on an ARM EC2 instance (`t4g.micro`) behind a Caddy reverse proxy, containerized with Docker Compose. PostgreSQL data lives on a dedicated encrypted EBS volume with `prevent_destroy` and daily DLM snapshots (7-day retention). Media uploads go to a separate private S3 bucket served through a second CloudFront distribution.
+
+The Strapi API is consumed **only at build time**. The deployed static site makes no runtime calls to the backend.
+
 ## License
 
 MIT
