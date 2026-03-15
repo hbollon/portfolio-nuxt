@@ -1,75 +1,76 @@
-# Nuxt Minimal Starter
+# portfolio-nuxt
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+My personal portfolio — a statically generated single-page site built with Nuxt 4. Space/cosmos dark theme, full EN/FR support, and a Strapi v5 CMS backend for content management.
 
-## Setup
+Live at [hugobollon.dev](https://hugobollon.dev).
 
-Make sure to install dependencies:
+## Stack
+
+- **Nuxt 4** — SSG via `nuxt generate`, deployed to S3 + CloudFront
+- **Tailwind CSS v4** — design tokens, glassmorphism, custom animations
+- **Strapi v5** — headless CMS, consumed at build time only
+- **@nuxtjs/i18n** — EN (default) / FR with `/fr/` prefix
+- **tsparticles** — particle background, adaptive to device capability
+- **GitHub Actions** — CI/CD with AWS OIDC (no static credentials)
+
+## Content management
+
+### With Strapi (recommended)
+
+Content is fetched from a Strapi v5 instance **at build time only** — there are no runtime API calls from the deployed site. Set `STRAPI_URL` and `STRAPI_TOKEN` in your environment, then run `yarn generate`.
+
+The expected Strapi content types are documented in [`specs/strapi-data-model.md`](specs/strapi-data-model.md).
+
+### Without Strapi (local fallback)
+
+If `STRAPI_URL` or `STRAPI_TOKEN` are not set, the site builds with static fallback content defined in `locales/content/en.ts` and `locales/content/fr.ts`. This is useful for local development without a running Strapi instance, but the content is placeholder data — not production-ready.
+
+## Prerequisites
+
+- Node.js 24+
+- Yarn Berry v4 (`corepack enable`)
+
+## Getting started
 
 ```bash
-# npm
-npm install
+cp .env.example .env.local
+# fill in at minimum STRAPI_URL and STRAPI_TOKEN (or leave blank for fallback content)
 
-# pnpm
-pnpm install
-
-# yarn
 yarn install
-
-# bun
-bun install
+yarn dev        # development server on http://localhost:3000
+yarn generate   # static site build → .output/public/
 ```
 
-## Development Server
+## Environment variables
 
-Start the development server on `http://localhost:3000`:
+Copy `.env.example` and fill in the relevant values.
 
-```bash
-# npm
-npm run dev
+| Variable                               | Required | Description                                                       |
+| -------------------------------------- | -------- | ----------------------------------------------------------------- |
+| `STRAPI_URL`                           | No\*     | Base URL of your Strapi instance                                  |
+| `STRAPI_TOKEN`                         | No\*     | Strapi API token (read-only)                                      |
+| `STRAPI_MEDIA_CDN_URL`                 | No       | CDN base URL to rewrite Strapi media URLs (e.g. CloudFront)       |
+| `NUXT_PUBLIC_SITE_URL`                 | Yes      | Canonical site URL, used for sitemap and OG tags                  |
+| `NUXT_PUBLIC_GITHUB_TOKEN`             | No       | GitHub PAT for project card stats (see warning below)             |
+| `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | No       | Google Search Console verification meta tag value                 |
+| `UMAMI_WEBSITE_ID`                     | No       | Umami Cloud website ID for analytics                              |
+| `UMAMI_SCRIPT_URL`                     | No       | Umami script URL (defaults to `https://cloud.umami.is/script.js`) |
+| `AWS_ROLE_ARN`                         | CI only  | IAM role ARN for OIDC-based S3/CloudFront deployment              |
+| `AWS_REGION`                           | CI only  | AWS region                                                        |
+| `S3_BUCKET_NAME`                       | CI only  | S3 bucket name                                                    |
+| `CLOUDFRONT_DISTRIBUTION_ID`           | CI only  | CloudFront distribution ID for cache invalidation                 |
 
-# pnpm
-pnpm dev
+\*Without `STRAPI_URL` + `STRAPI_TOKEN`, the build falls back to local content.
 
-# yarn
-yarn dev
+> **Warning — `NUXT_PUBLIC_GITHUB_TOKEN` is exposed in the client bundle.**
+> Any variable prefixed with `NUXT_PUBLIC_` is embedded in the generated JavaScript and visible to anyone who inspects the source. Use a fine-grained PAT scoped to **read-only public repositories** with no other permissions. Never use a token with write access or access to private repositories.
 
-# bun
-bun run dev
-```
+## Deployment
 
-## Production
+The site deploys automatically on push to `main` via GitHub Actions (see [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)). The workflow uses AWS OIDC authentication — no static AWS credentials are stored as secrets.
 
-Build the application for production:
+Required GitHub Actions secrets: `STRAPI_URL`, `STRAPI_TOKEN`, `STRAPI_MEDIA_CDN_URL`, `NUXT_PUBLIC_SITE_URL`, `NUXT_PUBLIC_GITHUB_TOKEN`, `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION`, `UMAMI_WEBSITE_ID`, `UMAMI_SCRIPT_URL`, `AWS_ROLE_ARN`, `AWS_REGION`, `S3_BUCKET_NAME`, `CLOUDFRONT_DISTRIBUTION_ID`.
 
-```bash
-# npm
-npm run build
+## License
 
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+MIT
