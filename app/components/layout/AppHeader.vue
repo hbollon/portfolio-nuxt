@@ -89,7 +89,7 @@ onMounted(() => {
   )
 
   for (const section of sections) {
-    observer.value.observe(section)
+    observer.value?.observe(section)
   }
 })
 

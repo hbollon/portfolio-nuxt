@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, useTemplateRef } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -13,7 +13,7 @@ const props = withDefaults(
 )
 
 const isVisible = ref(false)
-const elementRef = ref<HTMLElement | null>(null)
+const elementRef = useTemplateRef<HTMLElement>('elementRef')
 
 onMounted(() => {
   if (typeof window === 'undefined') {

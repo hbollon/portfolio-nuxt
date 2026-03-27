@@ -17,8 +17,6 @@ export default defineNuxtConfig({
   ],
 
   vite: {
-    // https://github.com/tailwindlabs/tailwindcss/discussions/19655
-    // @ts-expect-error - Vite plugin type mismatch between Nuxt and Tailwind
     plugins: tailwindcss(),
   },
 
