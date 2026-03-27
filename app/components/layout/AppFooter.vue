@@ -8,7 +8,7 @@
         rights reserved.
       </span>
       <a
-        href="https://github.com/hbollon"
+        href="https://github.com/hbollon/portfolio-nuxt"
         class="text-star-gray hover:text-star-white inline-flex items-center gap-1 transition"
         rel="noopener noreferrer"
         target="_blank"
