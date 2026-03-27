@@ -98,6 +98,7 @@ describe('createStrapiApi', () => {
 
     expect(getMock).toHaveBeenCalledWith('/technologies', {
       query: {
+        pagination: { pageSize: 200 },
         sort: ['order:asc'],
       },
     })
