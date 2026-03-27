@@ -11077,7 +11077,7 @@ __metadata:
     remark-rehype: "npm:^11.1.2"
     tailwindcss: "npm:^4.2.2"
     typescript: "npm:^5.9.3"
-    vite: "npm:^8.0.3"
+    vite: "npm:^7.3.1"
     vitest: "npm:^4.1.2"
     vue: "npm:^3.5.31"
     vue-router: "npm:^5.0.4"
@@ -13901,7 +13901,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^6.0.0 || ^7.0.0 || ^8.0.0, vite@npm:^8.0.3":
+"vite@npm:^6.0.0 || ^7.0.0 || ^8.0.0":
   version: 8.0.3
   resolution: "vite@npm:8.0.3"
   dependencies:
