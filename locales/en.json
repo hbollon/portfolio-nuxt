@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "Hugo Bollon",
-    "tagline": "DevOps Engineer & Fullstack Developer"
+    "tagline": "Product Builder · Software Engineer"
   },
   "nav": {
     "home": "Home",
@@ -12,19 +12,19 @@
     "contact": "Contact"
   },
   "hero": {
-    "title": "Engineering resilient platforms",
-    "subtitle": "with calm precision",
-    "description": "I design, automate, and operate cloud-native systems with a focus on reliability, security, and developer experience.",
+    "title": "I build products",
+    "subtitle": "from first commit to production",
+    "description": "Product Builder at Qanary. I care about the whole path: the idea, the code, and the infrastructure that keeps it running.",
     "ctaPrimary": "Get in touch",
-    "ctaSecondary": "Explore projects",
+    "ctaSecondary": "See what I’ve built",
     "typedPrefix": "I",
-    "typedPhrases": ["build", "deploy", "automate"],
-    "typedSuffix": "for modern teams",
+    "typedPhrases": ["build", "ship", "automate"],
+    "typedSuffix": "for product teams",
     "scrollHint": "Scroll"
   },
   "about": {
     "title": "About",
-    "description": "DevOps Engineer with a fullstack background, focused on automation, platform reliability, and open-source tooling.",
+    "description": "Product Builder with a fullstack background, focused on automation, platform reliability, and open-source tooling.",
     "resume": "Download resume",
     "github": "Open-source work",
     "profileLabel": "Profile",

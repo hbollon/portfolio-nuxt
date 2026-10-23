@@ -139,7 +139,7 @@ const onKeydown = (event: KeyboardEvent) => {
       <div class="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div class="flex items-center gap-3 text-lg font-semibold tracking-tight">
           <span class="text-gradient">Hugo Bollon</span>
-          <span class="text-star-gray text-xs">DevOps Engineer</span>
+          <span class="text-star-gray text-xs">Product Builder · Software Engineer</span>
         </div>
 
         <nav class="hidden items-center gap-6 text-sm lg:flex" aria-label="Main navigation">

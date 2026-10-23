@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "Hugo Bollon",
-    "tagline": "Ingénieur DevOps & Développeur Fullstack"
+    "tagline": "Product Builder · Software Engineer"
   },
   "nav": {
     "home": "Accueil",
@@ -12,19 +12,19 @@
     "contact": "Contact"
   },
   "hero": {
-    "title": "Des plateformes résilientes",
-    "subtitle": "avec une précision calme",
-    "description": "Je conçois, automatise et opère des systèmes cloud-native avec un focus sur la fiabilité, la sécurité et l’expérience développeur.",
+    "title": "Je construis des produits",
+    "subtitle": "du premier commit à la production",
+    "description": "Product Builder chez Qanary. Je m’intéresse à tout le chemin : l’idée, le code, et l’infrastructure qui le fait tourner.",
     "ctaPrimary": "Me contacter",
-    "ctaSecondary": "Explorer mes projets",
+    "ctaSecondary": "Voir mes projets",
     "typedPrefix": "Je",
-    "typedPhrases": ["conçois", "déploie", "automatise"],
-    "typedSuffix": "pour des équipes modernes",
+    "typedPhrases": ["conçois", "livre", "maintiens"],
+    "typedSuffix": "pour des équipes produit",
     "scrollHint": "Découvrir"
   },
   "about": {
     "title": "À propos",
-    "description": "Ingénieur DevOps avec un background fullstack, orienté automatisation, fiabilité plateforme et outillage open source.",
+    "description": "Product Builder avec un background fullstack, orienté automatisation, fiabilité plateforme et outillage open source.",
     "resume": "Télécharger le CV",
     "github": "Contributions open source",
     "profileLabel": "Profil",
