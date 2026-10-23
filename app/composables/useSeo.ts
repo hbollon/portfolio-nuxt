@@ -25,7 +25,7 @@ export const useSeo = (seo?: SharedSeo | null) => {
 
   const googleSiteVerification = runtimeConfig.public.googleSiteVerification as string
 
-  const meta: Record<string, string>[] = [
+  const meta = [
     { name: 'description', content: metaDescription },
     { property: 'og:title', content: metaTitle },
     { property: 'og:description', content: metaDescription },

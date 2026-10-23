@@ -82,7 +82,7 @@ export default defineNuxtConfig({
     detectBrowserLanguage: false,
     strategy: 'prefix_except_default',
     langDir: '../locales',
-    vueI18n: './i18n.config.ts',
+    vueI18n: '../i18n.config.ts',
     baseUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://hugobollon.dev',
   },
 
